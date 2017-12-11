@@ -87,6 +87,8 @@ function RecipesNewlyAdded()
             for (( x=0; x<${#recipeCreate[@]}; x++ ))
             do
                 echo "${recipeCreate[$x]}" ;
+                remotereponame[$j][$x]=recipeCreate[$x]
+                echo ++++++++++${remotereponame[$j][$x]}++++++++++++++
             done
             echo newly added recipe is "${recipeCreate[@]}" ;           
 }
@@ -210,8 +212,8 @@ function recipe_registry()
                     else
                         # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
-                        remotereponame[$j][$y]="${remotereponame[$j]}";
-                        echo =================="remotereponame[$j][$y]}";=================
+                        remotereponame[$j][$y]="${Gateway[$x]}";
+                        echo =================="${remotereponame[$j][$y]}";=================
                         y=$y+1;
                     fi                    
                 done
