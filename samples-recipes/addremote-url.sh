@@ -154,9 +154,9 @@ function recipe_registry()
                 url=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_url) ;
                 provider_url=$(echo $url | tr -d '"') ;
                 #remote_recipes;  
-                if [[ "${GOOSystem[$k]}" = linux ]]; then
+                if [[ "${GOOSystem[$k]}" == linux ]]; then
                     regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
-                #checking if url contains http or not
+                    #checking if url contains http or not
                     if [[ "$provider_url" =~ $regex ]] ; then
                         path_url=$provider_url ;
                         if [[ ! $provider_url == *[.git] ]] ; then
@@ -216,6 +216,7 @@ function recipe_registry()
                 RecipesNewlyAdded ;
             done
             #RecipesToBeCreated ;
+            echo ${remotereponame[@]};
 }
 
 function RecipesToBeCreated()
