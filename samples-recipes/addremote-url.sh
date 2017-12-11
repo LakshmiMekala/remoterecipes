@@ -87,11 +87,11 @@ function RecipesNewlyAdded()
             for (( x=0; x<${#recipeCreate[@]}; x++ ))
             do
                 echo "${recipeCreate[$x]}" ;
+                echo value of j is $j and value of x is $x;
                 remotereponame[$j_$x]="${recipeCreate[$x]}";
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
-            echo newly added recipe is "${recipeCreate[@]}" ;
-            echo "array for recipe $j is ${remotereponame[$j_@]}";           
+            echo newly added recipe is "${recipeCreate[@]}" ;           
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
