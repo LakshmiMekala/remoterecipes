@@ -139,23 +139,6 @@ function publish_gateway()
     set | grep ^Gateway=\\\|^publish= ;
 }
 
-function remote_recipes()
-{
-    regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
-    #checking if url contains http or not
-        if [[ "$provider_url" =~ $regex ]] ; then
-            path_url=$provider_url ;
-                if [[ ! $provider_url == *[.git] ]] ; then
-                    path_url=$path_url.git ;    
-                fi
-            remotereponame=$(echo $path_url | rev | cut -d '/' -f 1 | rev);
-            remotereponame=$(echo $remotereponame | cut -f1 -d '.');
-            echo $remotereponame
-            pushd $GOPATH/src/github.com/TIBCOSoftware ;
-            git clone $path_url "$remotereponame" ;
-            popd ;
-        fi 
-}
 function recipe_registry()
 {
     array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
@@ -170,8 +153,26 @@ function recipe_registry()
                 eval xpath_url='.recipe_repos[$j].url' ;
                 url=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_url) ;
                 provider_url=$(echo $url | tr -d '"') ;
-                remote_recipes ;  
+                #remote_recipes;  
                 if [[ "${GOOSystem[$k]}" = linux ]]; then
+                    regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
+                #checking if url contains http or not
+                    if [[ "$provider_url" =~ $regex ]] ; then
+                        path_url=$provider_url ;
+                        if [[ ! $provider_url == *[.git] ]] ; then
+                            path_url=$path_url.git ;    
+                        fi
+                        remotereponame[$j]=$(echo $path_url | rev | cut -d '/' -f 1 | rev);
+                        remotereponame[$j]=$(echo ${remotereponame[$j]} | cut -f1 -d '.');
+                        echo "${remotereponame[$j]}";
+                        pushd $GOPATH/src/github.com/TIBCOSoftware ;
+                        git clone $path_url "${remotereponame[$j]}" ;
+                        popd ;
+                    else
+                        remotereponame[$j]="$namefolder/$provider_url";
+                        remotereponame[$j]=$(echo ${remotereponame[$j]} | rev | cut -d '/' -f 1 | rev);
+                        echo remote url name="${remotereponame[$j]}";
+                    fi
                     if [[ $OPTIMIZE = TRUE ]] ; then
                         for (( x=0; x<$publish_length; x++ ))
                         do
@@ -214,7 +215,7 @@ function recipe_registry()
                 done
                 RecipesNewlyAdded ;
             done
-            RecipesToBeCreated ;
+            #RecipesToBeCreated ;
 }
 
 function RecipesToBeCreated()
@@ -223,25 +224,16 @@ function RecipesToBeCreated()
     echo length of gateway array is "${#recipeCreate[@]}";
     for (( y=0; y < "${#recipeCreate[@]}"; y++ ));
     do
-    if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$y]}/manifest ]] ; then
-        displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
-        displayImage=$(echo $displayImage | tr -d '"') ;
-        echo "creating ${recipeCreate[$y]} gateway" ;
-        cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
-        mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
-        rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest; 
-        #binarycheck ;
-echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    elif [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
-        displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
-        displayImage=$(echo $displayImage | tr -d '"') ;
-        echo "creating ${recipeCreate[$y]} gateway" ;
-        cp -r $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
-        mashling create -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
-        rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest;
-echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    fi
-    binarycheck ;
+        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
+            displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
+            displayImage=$(echo $displayImage | tr -d '"') ;
+            echo "creating ${recipeCreate[$y]} gateway" ;
+            cp -r $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
+            mashling create -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
+            rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest;
+            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        fi
+        binarycheck ;
     done
 }
 
