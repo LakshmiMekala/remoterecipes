@@ -17,8 +17,8 @@ install:
   - mkdir -p master-builds/latest/temp builds/latest
   
 script:
-   - chmod ugo+x ./remote-url.sh ./as2.sh
-   - ./remote-url.sh
+   - chmod ugo+x ./addremote-url.sh ./as2.sh
+   - ./addremote-url.sh
   # - ./latest.sh OPTIMIZE=${BUILDFLAGVALUE}
   # - ./as2.sh
    - popd

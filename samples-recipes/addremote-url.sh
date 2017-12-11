@@ -21,12 +21,12 @@ echo "OPTIMIZE = $OPTIMIZE"
 
 ####Adding AWS credentials to download latest recipes folder from S3
 
-# mkdir ${HOME}/.aws
-# cat > ${HOME}/.aws/credentials <<EOL
-# [default]
-# aws_access_key_id = ${SITE_KEY}
-# aws_secret_access_key = ${SITE_KEY_SECRET}
-# EOL
+mkdir ${HOME}/.aws
+cat > ${HOME}/.aws/credentials <<EOL
+[default]
+aws_access_key_id = ${SITE_KEY}
+aws_secret_access_key = ${SITE_KEY_SECRET}
+EOL
 
     pushd $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes
     #Fetching short commit id
@@ -62,29 +62,33 @@ function RecipesToBeDeleted()
 function RecipesNewlyAdded()
 {
     recipeAdded=()
-                for z in "${Gateway[@]}"; do
-                    skip=
-                    for l in "${recipesInLatest[@]}"; do
-                        [[ $z == $l ]] && { skip=1; break; }
-                    done
-                    [[ -n $skip ]] || recipeAdded+=("$z")
+    echo Gateway arrays are "${recipeCreate[@]}";
+    #echo recipes-in latest are "${recipesInLatest[@]}"
+            for z in "${Gateway[@]}"; do
+                skip=
+                for l in "${recipesInLatest[@]}"; do
+                    [[ $z == $l ]] && { skip=1; break; }
                 done
-                #declare -p recipeDeleteLatest
-		echo newly added recipe is "${recipeAdded[@]}" ;
-		#RecipesToBeCreated ;                
-        recipeCreateNew=()
-                y=0;
-                for (( x=0; x<${#recipeAdded[@]}; x++ ))
-                do
-                    recipeCreateNew[$y]=${recipeAdded[$x]} ;
-                    y=$y+1;   
-                done
-                echo "abcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                #echo newly added recipe is "${recipeAdded[@]}" ;
-                echo "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-                echo newly added recipe is "${recipeCreateNew[@]}" ;
-                echo "dddddddddddddddddddddddddddddddddddddd"
-               #RecipesToBeCreated ;
+                [[ -n $skip ]] || recipeAdded+=("$z")
+            done
+        echo #####################################################
+		echo newly added recipe-in recipe_registry is "${recipeAdded[@]}" ;
+        echo recipeCreate="${recipeCreate[@]}";
+        echo recipeTOCreate="${recipeTOCreate[@]}"
+        echo #####################################################
+        ###"${recipeTOCreate[@]}"
+        recipeTOCreate=$(echo "${recipeAdded[@]}" "${recipeCreate[@]}" "${recipeTOCreate[@]}"  | tr ' ' '\n' | sort -u | tr '\n' ' ') ;        
+        IFS=\  read -a recipeCreate <<<"$recipeTOCreate" ;
+        set | grep ^IFS= ;
+        #separating array by line
+        IFS=$' \t\n' ;
+        #fetching Gateway
+        set | grep ^recipeCreate=\\\|^recipeTOCreate= ;
+            for (( x=0; x<${#recipeCreate[@]}; x++ ))
+            do
+                echo "${recipeCreate[$x]}" ;
+            done
+            echo newly added recipe is "${recipeCreate[@]}" ;           
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -152,7 +156,6 @@ function remote_recipes()
             popd ;
         fi 
 }
-
 function recipe_registry()
 {
     array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
@@ -188,24 +191,15 @@ function recipe_registry()
                     Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
                     Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
                     #recipeCreate[$y]=${Gateway[$x]} ;
-                    echo #################################
-                    echo "${Gateway[$x]}" ;
-                    echo "${recipeCreate[$y]}";
-                    echo #################################
                     recipeInfo ;
-                    echo "creating recipe info json file"
-                    echo #################################
                     if [[ $OPTIMIZE = TRUE ]] ; then
                         if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
                             echo "${Gateway[$x]} found in current commit" ;
-                            echo "${Gateway[$x]}" ;
                             recipeCreate[$y]=${Gateway[$x]} ;
                             if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}" ]] ; then
                                 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}";
                             fi
                             echo #################################
-                            echo "${recipeCreate[$y]}" ;
-                            echo "value of y=$y"
                             y=$y+1;
                             echo #################################
                         else
@@ -216,22 +210,17 @@ function recipe_registry()
                         echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
                         y=$y+1;
-                    fi
+                    fi                    
                 done
-                echo "${recipeCreate[@]}" ;
-                echo gateway array is "${recipeCreate[@]}";
-                echo #################################
-                #RecipesToBeCreated ;
+                RecipesNewlyAdded ;
             done
-        
-        if [[ $OPTIMIZE = TRUE ]] ; then
-            RecipesNewlyAdded ; 
-        fi     
+            RecipesToBeCreated ;
 }
 
 function RecipesToBeCreated()
 {
     echo gateway array is "${recipeCreate[@]}";
+    echo length of gateway array is "${#recipeCreate[@]}";
     for (( y=0; y < "${#recipeCreate[@]}"; y++ ));
     do
     if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$y]}/manifest ]] ; then
@@ -243,8 +232,8 @@ function RecipesToBeCreated()
         rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest; 
         #binarycheck ;
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-     elif [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
-        displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
+    elif [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
+        displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
         displayImage=$(echo $displayImage | tr -d '"') ;
         echo "creating ${recipeCreate[$y]} gateway" ;
         cp -r $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
@@ -253,6 +242,7 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     fi
     binarycheck ;
+    fi
     done
 }
 
@@ -360,8 +350,8 @@ function recipeInfo()
             do
                 export GOOS="${GOOSystem[$k]}" ;
                 echo $GOOS ;
-                echo $GOARCH ;
                 export GOARCH=amd64 ;
+                echo $GOARCH ;
                     if [[ ! -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/tmp ]]; then
                     mkdir -p $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/tmp
                     fi
@@ -404,4 +394,4 @@ function recipeInfo()
         # cd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds
         # git add .
         # git commit -m "uploading builds" ;
-        # git push ;
+        # # git push ;
