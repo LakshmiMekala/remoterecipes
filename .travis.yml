@@ -5,6 +5,7 @@ before_install:
 #  - pip install --user awscli
 install:
   - go get github.com/constabulary/gb/...
+  - sudo apt-get install mosquitto mosquitto-clients
   - sudo apt-add-repository ppa:duggan/jo --yes
   - sudo apt-get update -q
   - sudo apt-get install jo
