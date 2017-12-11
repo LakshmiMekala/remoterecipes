@@ -194,20 +194,20 @@ function recipe_registry()
                     recipeInfo ;
                     if [[ $OPTIMIZE = TRUE ]] ; then
                         if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
-                            echo "${Gateway[$x]} found in current commit" ;
+                            # echo "${Gateway[$x]} found in current commit" ;
                             recipeCreate[$y]=${Gateway[$x]} ;
                             if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}" ]] ; then
                                 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}";
                             fi
-                            echo #################################
-                            y=$y+1;
-                            echo #################################
+                            # echo #################################
+                            # y=$y+1;
+                            # echo #################################
                         else
                             echo "${Gateway[$x]} not found in current commit ";
                         fi
                         #recipeInfo ;
                     else
-                        echo "recipe needs to be created from full build"
+                        # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
                         y=$y+1;
                     fi                    
@@ -242,7 +242,6 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     fi
     binarycheck ;
-    fi
     done
 }
 
