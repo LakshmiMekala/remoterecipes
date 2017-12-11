@@ -214,8 +214,8 @@ function recipe_registry()
                     else
                         # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
-                        recipearray[$j $y]="${Gateway[$x]}";
-                        echo =================="${recipearray[$j $y]}"=================;
+                        recipearray[$j_$y]="${Gateway[$x]}";
+                        echo =================="${recipearray[$j_$y]}"=================;
                         y=$y+1;
                     fi                    
                 done
