@@ -170,7 +170,7 @@ function recipe_registry()
                         popd ;
                     else
                         remotereponame[$j]="$namefolder/$provider_url";
-                        remotereponame[$j]=$(echo ${remotereponame[$j]} | rev | cut -d '/' -f 1 | rev);
+                        remotereponame_url[$j]=$(echo ${remotereponame[$j]} | rev | cut -d '/' -f 1 | rev);
                         echo remote url name="${remotereponame[$j]}";
                     fi
                     if [[ $OPTIMIZE = TRUE ]] ; then
@@ -210,6 +210,8 @@ function recipe_registry()
                     else
                         # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
+                        remotereponame[$j][$y]="${remotereponame[$j]}";
+                        echo =================="remotereponame[$j][$y]}";=================
                         y=$y+1;
                     fi                    
                 done
@@ -223,18 +225,24 @@ function RecipesToBeCreated()
 {
     echo gateway array is "${recipeCreate[@]}";
     echo length of gateway array is "${#recipeCreate[@]}";
-    for (( y=0; y < "${#recipeCreate[@]}"; y++ ));
+    for (( j = 0; j < $array_length; j++ ))
     do
-        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
-            displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
-            displayImage=$(echo $displayImage | tr -d '"') ;
-            echo "creating ${recipeCreate[$y]} gateway" ;
-            cp -r $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
-            mashling create -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
-            rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest;
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        fi
-        binarycheck ;
+        mkdir -p "${remotereponame[$j]}";
+        cd "${remotereponame[$j]}" ;
+        for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
+        do
+            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
+                displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
+                displayImage=$(echo $displayImage | tr -d '"') ;
+                echo "creating ${recipeCreate[$y]} gateway" ;
+                cp -r $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
+                mashling create -f $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
+                rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest;
+                echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            fi
+            binarycheck ;
+        done
+        cd ..;
     done
 }
 
