@@ -188,6 +188,7 @@ function recipe_registry()
                     fi
                 fi
                 recipeCreate=()
+                recipearray=()
                 y=0;
                 for (( x=0; x<$publish_length; x++ ))
                 do
@@ -213,15 +214,15 @@ function recipe_registry()
                     else
                         # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
-                        remotereponame[$j][$y]="${Gateway[$x]}";
-                        echo =================="${remotereponame[$j][$y]}"=================;
+                        recipearray[$j][$y]="${Gateway[$x]}";
+                        echo =================="${recipearray[$j][$y]}"=================;
                         y=$y+1;
                     fi                    
                 done
                 RecipesNewlyAdded ;
             done
             #RecipesToBeCreated ;
-            echo ${remotereponame[@]};
+            echo ${recipearray[@]};
 }
 
 function RecipesToBeCreated()
