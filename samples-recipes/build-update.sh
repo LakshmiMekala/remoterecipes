@@ -275,7 +275,7 @@ function package_gateway()
             cd "${recipeCreate[$y]}";
             GOOSystem=({"linux","darwin", "windows"})
             OS_NAME=({"linux","osx","windows"});
-            echo "entered into "${recipeCreate[$y]}" folder"
+            echo "entered into ${recipeCreate[$y]} folder"
             for (( k=0; k < "${#GOOSystem[@]}"; k++ ));
             do
                 export GOOS="${GOOSystem[$k]}" ;
