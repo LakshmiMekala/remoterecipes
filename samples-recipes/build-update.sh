@@ -286,8 +286,9 @@ function package_gateway()
                 echo "hitting mashling build";
                 mashling build ;        
                 mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;            
-                mv  mashling.json "${recipeCreate[$y]}.mashling.json" ;
+                mv mashling.json "${recipeCreate[$y]}.mashling.json" ;
                 cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
+                mv "${recipeCreate[$y]}.mashling.json" mashling.json ;
                 echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
                 if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
                 cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${remotereponame[$j]}/"${recipeCreate[$y]}"
@@ -325,7 +326,7 @@ function package_gateway()
                 # cp -r "${recipeCreate[$y]}" ../latest ;
                 # Exit if directory not found
             done            
-            rm -r src vendor pkg ;
+            rm -r src vendor pkg mashling.json ;
     else
         echo "failed to create ${recipeCreate[$y]} gateway"
         echo "directory ${recipeCreate[$y]}" not found
