@@ -27,8 +27,8 @@ install:
   
 script:
    - chmod ugo+x ./addremote-url.sh ./as2.sh ./build-update.sh
-  # - ./addremote-url.sh
-   - ./build-update.sh
+   - ./addremote-url.sh
+  # - ./build-update.sh
   # - ./latest.sh OPTIMIZE=${BUILDFLAGVALUE}
   # - ./as2.sh
    - popd
