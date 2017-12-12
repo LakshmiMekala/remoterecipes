@@ -92,7 +92,7 @@ function RecipesNewlyAdded()
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
             echo newly added recipe is "${recipeCreate[@]}" ; 
-           # RecipesToBeCreated ;          
+            RecipesToBeCreated ;          
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -159,7 +159,7 @@ function recipe_registry()
                 provider_url=$(echo $url | tr -d '"') ;
                 eval xpath_provider='.recipe_repos[$j].provider' ;
                 provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
-                provider[$j]=$(echo $url | tr -d '"') ;
+                provider[$j]=$(echo $provider | tr -d '"') ;
                 echo provider is "${provider[$j]}";
                 #remote_recipes;  
                 if [[ "${GOOSystem[$k]}" == linux ]]; then
