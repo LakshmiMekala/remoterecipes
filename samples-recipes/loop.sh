@@ -159,8 +159,8 @@ function recipe_registry()
                 provider_url=$(echo $url | tr -d '"') ;
                 eval xpath_provider='.recipe_repos[$j].provider' ;
                 provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
-                provider[$j]=$(echo $url | tr -d '"') ;
-                echo provider is "provider[$j]";
+                provider[$j]=$(echo $provider | tr -d '"') ;
+                echo provider is "${provider[$j]}";
                 #remote_recipes;  
                 if [[ "${GOOSystem[$k]}" == linux ]]; then
                     regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
@@ -234,9 +234,9 @@ function RecipesToBeCreated()
     echo length of gateway array is "${#recipeCreate[@]}";
     #for (( j = 0; j < $array_length; j++ ))
     #do
-        mkdir -p ""${provider[$j]}"";
-        echo "${remotereponame[$j]}" ; 
-        cd ""${provider[$j]}"" ;
+        mkdir -p "${provider[$j]}";
+        echo "${provider[$j]}" ; 
+        cd "${provider[$j]}" ;
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
             #recipeCreate[$y]="${recipearray[$j_$y]}";
@@ -289,7 +289,7 @@ function package_gateway()
             cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
             echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
             if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
-            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${remotereponame[$j]}/"${recipeCreate[$y]}"
+            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${provider[$j]}/"${recipeCreate[$y]}"
             fi
             echo "$displayImage";
             rm -r src vendor pkg ;
@@ -354,7 +354,8 @@ function recipeInfo()
     GOOSystem=({"linux","darwin","windows"});
     OS_NAME=({"linux","osx","windows"});
     # GOARCH=({"amd64","amd64","amd64"});
-        # get length of an array
+    # get length of an array
+    array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
         Len="${#GOOSystem[@]}"
             for (( k=0; k < "${Len}"; k++ ));
             do
