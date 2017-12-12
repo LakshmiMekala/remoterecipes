@@ -147,7 +147,7 @@ function recipe_registry()
 {
     array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
     echo "Found $array_length recipe providers." ;
-        for (( j = 0; j < $array_length; j++ ))
+        for (( j = 0; j < 1; j++ ))
             do
                 echo "value of j=$j" ;
                 #eval provider and publish
@@ -254,7 +254,7 @@ function RecipesToBeCreated()
 
 function binarycheck()
 {
-    if [[ ! "${OS_NAME[$k]}" == "windows" ]] ; then        
+    if [[  "$GOOS" == "linux" ]] ; then        
         fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH" ;
         fnamelc="${fname,,}" ;
         if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
@@ -272,55 +272,57 @@ function package_gateway()
     if [ -d "${recipeCreate[$y]}" ]; then
             cd "${recipeCreate[$y]}";
             GOOSystem=({"linux","darwin", "windows"})
-            OS_NAME=({"osx","windows"});
+            OS_NAME=({"linux","osx","windows"});
+            echo "entered into "${recipeCreate[$y]}" folder"
             for (( k=0; k < "${#GOOSystem[@]}"; k++ ));
             do
                 export GOOS="${GOOSystem[$k]}" ;
                 echo $GOOS ;
                 export GOARCH=amd64 ;
                 echo $GOARCH ;
-            mashling build ;        
-            mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;            
-            mv  mashling.json "${recipeCreate[$y]}.mashling.json" ;
-            cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
-            echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
-            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
-            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${remotereponame[$j]}/"${recipeCreate[$y]}"
-            fi
-            echo "$displayImage";
-            rm -r src vendor pkg ;
+                echo "hitting mashling build";
+                mashling build ;        
+                mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;            
+                mv  mashling.json "${recipeCreate[$y]}.mashling.json" ;
+                cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
+                echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
+                if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
+                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${remotereponame[$j]}/"${recipeCreate[$y]}"
+                fi
+                echo "$displayImage";
                 # Changing directory to  binary containing folder
                 cd "${recipeCreate[$y]}-${OS_NAME[$k]}";
-                    if [ "${OS_NAME[$k]}" == windows ] ; then
-                        fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH.exe" ;
-                        echo "$fname" ;
-                        fnamelc="${fname,,}" ;
-                        echo "$fnamelc" ;
-                        destfname="${recipeCreate[$y]}.exe" ;
-                        echo "$destfname" ;
-                        destfnamelc="${destfname,,}" ;
-                        echo "$destfnamelc" ;
-                        mv $fnamelc $destfnamelc ;
-                    else
-                        fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH" ;
-                        echo "$fname" ;
-                        fnamelc="${fname,,}" ;
-                        echo "$fnamelc" ;
-                        destfname="${recipeCreate[$y]}" ;
-                        echo "$destfname" ;
-                        destfnamelc="${destfname,,}" ;
-                        echo "$destfnamelc" ;
-                        mv $fnamelc $destfnamelc ;
-                    fi
-                    zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
-                    cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
+                if [ "${OS_NAME[$k]}" == windows ] ; then
+                    fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH.exe" ;
+                    echo "$fname" ;
+                    fnamelc="${fname,,}" ;
+                    echo "$fnamelc" ;
+                    destfname="${recipeCreate[$y]}.exe" ;
+                    echo "$destfname" ;
+                    destfnamelc="${destfname,,}" ;
+                    echo "$destfnamelc" ;
+                    mv $fnamelc $destfnamelc ;
+                else
+                    fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH" ;
+                    echo "$fname" ;
+                    fnamelc="${fname,,}" ;
+                    echo "$fnamelc" ;
+                    destfname="${recipeCreate[$y]}" ;
+                    echo "$destfname" ;
+                    destfnamelc="${destfname,,}" ;
+                    echo "$destfnamelc" ;
+                    mv $fnamelc $destfnamelc ;
+                fi
+                zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
+                cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
                 cd .. ;
-            rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
-        cd ..;
-        # Copying gateway into latest folder
-        # cp -r "${recipeCreate[$y]}" ../latest ;
-        # Exit if directory not found
-        done
+                rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
+                cd ..;
+                # Copying gateway into latest folder
+                # cp -r "${recipeCreate[$y]}" ../latest ;
+                # Exit if directory not found
+            done            
+            rm -r src vendor pkg ;
     else
         echo "failed to create ${recipeCreate[$y]} gateway"
         echo "directory ${recipeCreate[$y]}" not found
