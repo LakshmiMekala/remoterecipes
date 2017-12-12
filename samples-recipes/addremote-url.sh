@@ -173,7 +173,7 @@ function recipe_registry()
                         git clone $path_url "${remotereponame[$j]}" ;
                         popd ;
                     else
-                        remotereponame[$j]="$namefolder/$provider_url";
+                        remotereponame[$j]="$provider_url";
                     fi
                     if [[ $OPTIMIZE = TRUE ]] ; then
                         for (( x=0; x<$publish_length; x++ ))
