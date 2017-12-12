@@ -332,6 +332,7 @@ function package_gateway()
             done            
             rm -r src vendor pkg mashling.json ;            
             cd ..;
+            export GOOS=linux
     else
         echo "failed to create ${recipeCreate[$y]} gateway"
         echo "directory ${recipeCreate[$y]}" not found
