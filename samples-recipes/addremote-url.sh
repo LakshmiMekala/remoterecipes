@@ -88,7 +88,7 @@ function RecipesNewlyAdded()
             do
                 echo "${recipeCreate[$x]}" ;
                 echo value of j is $j and value of x is $x;
-                remotereponame[$j_$x]="${recipeCreate[$x]}";
+                #remotereponame[$j_$x]="${recipeCreate[$x]}";
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
             echo newly added recipe is "${recipeCreate[@]}" ; 
@@ -213,8 +213,8 @@ function recipe_registry()
                     else
                         # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
-                        recipearray[$j_$y]="${Gateway[$x]}";
-                        echo =================="${recipearray[$j_$y]}"=================;
+                        #recipearray[$j_$y]="${Gateway[$x]}";
+                        #echo =================="${recipearray[$j_$y]}"=================;
                         y=$y+1;
                     fi                    
                 done
@@ -235,7 +235,7 @@ function RecipesToBeCreated()
         cd "${remotereponame[$j]}" ;
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
-            recipeCreate[$y]="${recipearray[$j_$y]}";
+            #recipeCreate[$y]="${recipearray[$j_$y]}";
             echo "${remotereponame[$j]}";
             if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
                 displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
