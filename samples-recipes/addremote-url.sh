@@ -228,15 +228,17 @@ function RecipesToBeCreated()
 {
     echo gateway array is "${recipeCreate[@]}";
     echo length of gateway array is "${#recipeCreate[@]}";
-    for (( j = 0; j < $array_length; j++ ))
-    do
+    #for (( j = 0; j < $array_length; j++ ))
+    #do
         mkdir -p "${remotereponame[$j]}";
+        echo "${remotereponame[$j]}" ; 
         cd "${remotereponame[$j]}" ;
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
             recipeCreate[$y]="${recipearray[$j_$y]}";
-            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
-                displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
+            echo "${remotereponame[$j]}";
+            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
+                displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
                 displayImage=$(echo $displayImage | tr -d '"') ;
                 echo "creating ${recipeCreate[$y]} gateway" ;
                 cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
@@ -247,7 +249,7 @@ function RecipesToBeCreated()
             binarycheck ;
         done
         cd ..;
-    done
+   # done
 }
 
 function binarycheck()
