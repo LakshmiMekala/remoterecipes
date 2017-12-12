@@ -260,6 +260,7 @@ function binarycheck()
         echo $fnamelc ;
         if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             echo "binary file found" ;
+            package_gateway;
         else
             echo "${recipeCreate[$y]} binary not found"
             exit 1;
