@@ -257,7 +257,7 @@ function binarycheck()
     if [[ "${OS_NAME[$k]}" == "windows" ]] ; then
         fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH.exe" ;
         fnamelc="${fname,,}" ;
-        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}"/bin/$fnamelc ]];then
+        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]];then
             package_gateway ;
         else
             echo "${recipeCreate[$y]} binary not found"
@@ -266,7 +266,7 @@ function binarycheck()
     else
         fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH" ;
         fnamelc="${fname,,}" ;
-        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
+        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             package_gateway ;
         else
             echo "${recipeCreate[$y]} binary not found"
