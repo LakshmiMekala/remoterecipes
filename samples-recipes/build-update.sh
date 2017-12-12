@@ -294,6 +294,7 @@ function package_gateway()
                 cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${remotereponame[$j]}/"${recipeCreate[$y]}"
                 fi
                 echo "$displayImage";
+                #rm -r src vendor pkg ;
                 # Changing directory to  binary containing folder
                 cd "${recipeCreate[$y]}-${OS_NAME[$k]}";
                 if [ "${OS_NAME[$k]}" == windows ] ; then

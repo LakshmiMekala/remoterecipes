@@ -92,7 +92,7 @@ function RecipesNewlyAdded()
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
             echo newly added recipe is "${recipeCreate[@]}" ; 
-           # RecipesToBeCreated ;          
+            RecipesToBeCreated ;          
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -160,7 +160,7 @@ function recipe_registry()
                 eval xpath_provider='.recipe_repos[$j].provider' ;
                 provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
                 provider[$j]=$(echo $url | tr -d '"') ;
-                echo provider is "${provider[$j]}";
+                echo provider is "provider[$j]";
                 #remote_recipes;  
                 if [[ "${GOOSystem[$k]}" == linux ]]; then
                     regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
@@ -234,9 +234,9 @@ function RecipesToBeCreated()
     echo length of gateway array is "${#recipeCreate[@]}";
     #for (( j = 0; j < $array_length; j++ ))
     #do
-        mkdir -p "${provider[$j]}";
-        echo "${provider[$j]}" ; 
-        cd "${provider[$j]}" ;
+        mkdir -p ""${provider[$j]}"";
+        echo "${remotereponame[$j]}" ; 
+        cd ""${provider[$j]}"" ;
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
             #recipeCreate[$y]="${recipearray[$j_$y]}";
