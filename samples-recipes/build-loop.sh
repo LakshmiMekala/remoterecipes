@@ -37,9 +37,27 @@ EOL
     echo $recipeName
     popd ;
 
+###Fetching recipes from latest folder
+function recipesFromLatest()
+{
+    pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
+    rm -rf recipeinfo.json recipe_registry.json
+    recipesInLatest=("${remotereponame[$j]}"/*)
+    for ((i=0; i<${#recipesInLatest[@]}; i++));
+    do
+        echo "${recipesInLatest[$i]}";
+        recipesInLatest[$i]=${recipesInLatest[$i]}
+    done    
+    echo Recipes available-in latest folder : "${recipesInLatest[@]}" ;
+    popd
+}
+
+
+
 ###Deleting receipes removed from recipe_registry.json
 function RecipesToBeDeleted()
 {
+    recipesFromLatest ;
     recipeDeleteLatest=()
                 for z in "${recipesInLatest[@]}"; do
                     skip=
@@ -61,6 +79,7 @@ function RecipesToBeDeleted()
 
 function RecipesNewlyAdded()
 {
+    recipesFromLatest ;
     recipeAdded=()
     echo Gateway arrays are "${recipeCreate[@]}";
     #echo recipes-in latest are "${recipesInLatest[@]}"
@@ -98,17 +117,7 @@ function RecipesNewlyAdded()
 ##Function to copy recipes from S3 to Local for optimized build
 function S3copytoLocal()
 {
-    aws s3 cp s3://test-bucket4569/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive
-    pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
-    rm -rf recipeinfo.json recipe_registry.json
-    recipesInLatest=(*)
-    for ((i=0; i<${#recipesInLatest[@]}; i++));
-    do
-        echo "${recipesInLatest[$i]}";
-        recipesInLatest[$i]=${recipesInLatest[$i]}
-    done
-    echo Recipes available-in latest folder : "${recipesInLatest[@]}" ;
-    popd
+    aws s3 cp s3://test-bucket4569/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive    
 }
 ###########################################################################
 
@@ -147,7 +156,7 @@ function recipe_registry()
 {
     array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
     echo "Found $array_length recipe providers." ;
-        for (( j = 0; j < 1; j++ ))
+        for (( j = 0; j < $array_length; j++ ))
             do
                 echo "value of j=$j" ;
                 #eval provider and publish
@@ -333,7 +342,7 @@ function package_gateway()
             done            
             rm -r src vendor pkg mashling.json ;            
             cd ..;
-            export GOOS=linux
+            export GOOS=linux ;
     else
         echo "failed to create ${recipeCreate[$y]} gateway"
         echo "directory ${recipeCreate[$y]}" not found
