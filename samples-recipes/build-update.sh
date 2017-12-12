@@ -236,7 +236,7 @@ function RecipesToBeCreated()
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
             #recipeCreate[$y]="${recipearray[$j_$y]}";
-            echo "${remotereponame[$j]}";
+            echo "${recipeCreate[$y]}";
             if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
                 displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
                 displayImage=$(echo $displayImage | tr -d '"') ;
@@ -258,7 +258,7 @@ function binarycheck()
         fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH" ;
         fnamelc="${fname,,}" ;
         if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
-            package_gateway ;
+            echo "binary file found" ;
         else
             echo "${recipeCreate[$y]} binary not found"
             exit 1;
