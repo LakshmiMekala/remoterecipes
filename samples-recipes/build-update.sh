@@ -157,6 +157,10 @@ function recipe_registry()
                 eval xpath_url='.recipe_repos[$j].url' ;
                 url=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_url) ;
                 provider_url=$(echo $url | tr -d '"') ;
+                eval xpath_provider='.recipe_repos[$j].provider' ;
+                provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
+                provider[$j]=$(echo $provider | tr -d '"') ;
+                echo provider is "${provider[$j]}";
                 #remote_recipes;  
                 if [[ "$GOOS" == linux ]]; then
                     regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
@@ -230,9 +234,9 @@ function RecipesToBeCreated()
     echo length of gateway array is "${#recipeCreate[@]}";
     #for (( j = 0; j < $array_length; j++ ))
     #do
-        mkdir -p "${remotereponame[$j]}";
-        echo "${remotereponame[$j]}" ; 
-        cd "${remotereponame[$j]}" ;
+        mkdir -p "${provider[$j]}";
+        echo "${provider[$j]}" ; 
+        cd "${provider[$j]}" ;
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
             #recipeCreate[$y]="${recipearray[$j_$y]}";
@@ -241,9 +245,9 @@ function RecipesToBeCreated()
                 displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
                 displayImage=$(echo $displayImage | tr -d '"') ;
                 echo "creating ${recipeCreate[$y]} gateway" ;
-                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
+                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"
                 mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
-                rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest;
+                rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/manifest;
                 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             fi
             binarycheck ;
@@ -258,7 +262,7 @@ function binarycheck()
         fname="${recipeCreate[$y]}-$GOOS-$GOARCH" ;
         fnamelc="${fname,,}" ;
         echo $fnamelc ;
-        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
+        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             echo "binary file found" ;
             package_gateway;
         else
@@ -291,7 +295,7 @@ function package_gateway()
                 mv "${recipeCreate[$y]}.mashling.json" mashling.json ;
                 echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
                 if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
-                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${remotereponame[$j]}/"${recipeCreate[$y]}"
+                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"
                 fi
                 echo "$displayImage";
                 #rm -r src vendor pkg ;
@@ -322,12 +326,12 @@ function package_gateway()
                 cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
                 cd .. ;
                 rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
-                cd ..;
                 # Copying gateway into latest folder
                 # cp -r "${recipeCreate[$y]}" ../latest ;
                 # Exit if directory not found
             done            
-            rm -r src vendor pkg mashling.json ;
+            rm -r src vendor pkg mashling.json ;            
+            cd ..;
     else
         echo "failed to create ${recipeCreate[$y]} gateway"
         echo "directory ${recipeCreate[$y]}" not found
