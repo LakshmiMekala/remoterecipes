@@ -38,8 +38,20 @@ EOL
     popd ;
 
 ###Deleting receipes removed from recipe_registry.json
-function RecipesToBeDeleted()
+function recipesFromLatest()
 {
+    recipesInLatest=("${remotereponame[$j]}"/*)
+    for ((i=0; i<${#recipesInLatest[@]}; i++));
+    do
+        echo "${recipesInLatest[$i]}";
+        recipesInLatest[$i]=${recipesInLatest[$i]}
+    done
+}
+
+function RecipesToBeDeleted()
+{   
+    recipesFromLatest ; 
+    echo Recipes available-in latest folder : "${recipesInLatest[@]}" ;
     recipeDeleteLatest=()
                 for z in "${recipesInLatest[@]}"; do
                     skip=
@@ -61,6 +73,7 @@ function RecipesToBeDeleted()
 
 function RecipesNewlyAdded()
 {
+    recipesFromLatest ;
     recipeAdded=()
     echo Gateway arrays are "${recipeCreate[@]}";
     #echo recipes-in latest are "${recipesInLatest[@]}"
@@ -100,14 +113,14 @@ function S3copytoLocal()
 {
     aws s3 cp s3://test-bucket4569/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive
     pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
-    rm -rf recipeinfo.json recipe_registry.json
-    recipesInLatest=(*)
-    for ((i=0; i<${#recipesInLatest[@]}; i++));
-    do
-        echo "${recipesInLatest[$i]}";
-        recipesInLatest[$i]=${recipesInLatest[$i]}
-    done
-    echo Recipes available-in latest folder : "${recipesInLatest[@]}" ;
+    # rm -rf recipeinfo.json recipe_registry.json
+    # recipesInLatest=("${remotereponame[$j]}"/*)
+    # for ((i=0; i<${#recipesInLatest[@]}; i++));
+    # do
+    #     echo "${recipesInLatest[$i]}";
+    #     recipesInLatest[$i]=${recipesInLatest[$i]}
+    # done
+    # echo Recipes available-in latest folder : "${recipesInLatest[@]}" ;
     popd
 }
 ###########################################################################
@@ -246,6 +259,11 @@ function RecipesToBeCreated()
                 displayImage=$(echo $displayImage | tr -d '"') ;
                 echo "creating ${recipeCreate[$y]} gateway" ;
                 cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"
+                pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"
+                echo "checking for manifest file"
+                ls ;
+                echo "=================================================";
+                popd
                 mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
                 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/manifest;
                 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -289,7 +307,7 @@ function package_gateway()
             cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
             echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
             if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
-            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/${provider[$j]}/"${recipeCreate[$y]}"
+            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"
             fi
             echo "$displayImage";
             rm -r src vendor pkg ;

@@ -26,9 +26,10 @@ install:
   - mkdir -p master-builds/latest/temp builds/latest
   
 script:
-   - chmod ugo+x ./addremote-url.sh ./as2.sh ./build-update.sh
-   - ./addremote-url.sh
+   - chmod ugo+x ./addremote-url.sh ./as2.sh ./build-update.sh ./loop.sh
+  # - ./addremote-url.sh
   # - ./build-update.sh
+   - ./loop.sh
   # - ./latest.sh OPTIMIZE=${BUILDFLAGVALUE}
   # - ./as2.sh
    - popd
