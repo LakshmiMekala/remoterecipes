@@ -9,7 +9,15 @@ install:
   - sudo apt-add-repository ppa:duggan/jo --yes
   - sudo apt-get update -q
   - sudo apt-get install jo
-  - go get -u github.com/TIBCOSoftware/mashling/...
+  - go get -u github.com/tools/godep/...
+  - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
+  - cd $GOPATH/src/github.com/TIBCOSoftware
+  - git clone https://github.com/TIBCOSoftware/mashling.git
+  - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
+  - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
+  - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
+  - godep restore
+  - go install ./...
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone https://github.com/LakshmiMekala/sampleabc.git mashling-recipes
   - git clone https://github.com/LakshmiMekala/remoterecipes.git recip1
