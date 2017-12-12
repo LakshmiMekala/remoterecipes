@@ -91,7 +91,8 @@ function RecipesNewlyAdded()
                 remotereponame[$j_$x]="${recipeCreate[$x]}";
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
-            echo newly added recipe is "${recipeCreate[@]}" ;           
+            echo newly added recipe is "${recipeCreate[@]}" ; 
+            RecipesToBeCreated ;          
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -168,13 +169,11 @@ function recipe_registry()
                         remotereponame[$j]=$(echo $path_url | rev | cut -d '/' -f 1 | rev);
                         remotereponame[$j]=$(echo ${remotereponame[$j]} | cut -f1 -d '.');
                         echo "${remotereponame[$j]}";
-                        pushd $GOPATH/src/github.com/TIBCOSoftware ;
+                        pushd $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes ;
                         git clone $path_url "${remotereponame[$j]}" ;
                         popd ;
                     else
                         remotereponame[$j]="$namefolder/$provider_url";
-                        remotereponame_url[$j]=$(echo ${remotereponame[$j]} | rev | cut -d '/' -f 1 | rev);
-                        echo remote url name="${remotereponame[$j]}";
                     fi
                     if [[ $OPTIMIZE = TRUE ]] ; then
                         for (( x=0; x<$publish_length; x++ ))
@@ -235,12 +234,13 @@ function RecipesToBeCreated()
         cd "${remotereponame[$j]}" ;
         for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
         do
-            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
+            recipeCreate[$y]="${recipearray[$j_$y]}";
+            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/$remotereponame/${recipeCreate[$y]}/manifest ]] ; then
                 displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
                 displayImage=$(echo $displayImage | tr -d '"') ;
                 echo "creating ${recipeCreate[$y]} gateway" ;
-                cp -r $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
-                mashling create -f $GOPATH/src/github.com/TIBCOSoftware/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
+                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"
+                mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
                 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/manifest;
                 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             fi
@@ -281,9 +281,9 @@ function package_gateway()
             mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
             mv  mashling.json "${recipeCreate[$y]}.mashling.json" ;
             cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
-            echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${recipeCreate[$y]}"/"$displayImage"
-            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${recipeCreate[$y]}"/"$displayImage" ]]; then
-            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}"
+            echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
+            if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
+            cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}"
             fi
             echo "$displayImage";
             rm -r src vendor pkg ;
