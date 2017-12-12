@@ -277,6 +277,7 @@ function package_gateway()
     # If directory exists proceed to next steps
     if [ -d "${recipeCreate[$y]}" ]; then
             cd "${recipeCreate[$y]}";
+            cat mashling.json >> "${recipeCreate[$y]}.mashling.json" ;
             GOOSystem=("linux" "darwin" "windows");
             OS_NAME=("linux" "osx" "windows");  
             echo "entered into ${recipeCreate[$y]} folder"
@@ -290,9 +291,9 @@ function package_gateway()
                 echo "hitting mashling build";
                 mashling build ;        
                 mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;            
-                mv mashling.json "${recipeCreate[$y]}.mashling.json" ;
+                #mv mashling.json "${recipeCreate[$y]}.mashling.json" ;
                 cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
-                mv "${recipeCreate[$y]}.mashling.json" mashling.json ;
+                #mv "${recipeCreate[$y]}.mashling.json" mashling.json ;
                 echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
                 if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
                 cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"
