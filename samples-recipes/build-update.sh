@@ -255,8 +255,9 @@ function RecipesToBeCreated()
 function binarycheck()
 {
     if [[  "$GOOS" == "linux" ]] ; then        
-        fname="${recipeCreate[$y]}-${GOOSystem[$k]}-$GOARCH" ;
+        fname="${recipeCreate[$y]}-$GOOS-$GOARCH" ;
         fnamelc="${fname,,}" ;
+        echo $fnamelc ;
         if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             echo "binary file found" ;
         else
