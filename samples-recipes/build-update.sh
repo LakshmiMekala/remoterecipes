@@ -273,15 +273,16 @@ function package_gateway()
     # If directory exists proceed to next steps
     if [ -d "${recipeCreate[$y]}" ]; then
             cd "${recipeCreate[$y]}";
-            GOOSystem=({"linux","darwin", "windows"})
-            OS_NAME=({"linux","osx","windows"});
+            GOOSystem=({"linux", "darwin", "windows"})
+            OS_NAME=({"linux", "osx", "windows"});
             echo "entered into ${recipeCreate[$y]} folder"
-            for (( k=0; k < "${#GOOSystem[@]}"; k++ ));
+            Len="${#GOOSystem[@]}"
+            for (( k=0; k < "${Len}"; k++ ));
             do
                 export GOOS="${GOOSystem[$k]}" ;
-                echo $GOOS ;
+                echo GOOS=$GOOS ;
                 export GOARCH=amd64 ;
-                echo $GOARCH ;
+                echo GOARCH=$GOARCH ;
                 echo "hitting mashling build";
                 mashling build ;        
                 mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;            
