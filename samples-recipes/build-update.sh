@@ -273,8 +273,8 @@ function package_gateway()
     # If directory exists proceed to next steps
     if [ -d "${recipeCreate[$y]}" ]; then
             cd "${recipeCreate[$y]}";
-            GOOSystem=({"linux", "darwin", "windows"})
-            OS_NAME=({"linux", "osx", "windows"});
+            GOOSystem=("linux" "darwin" "windows");
+            OS_NAME=("linux" "osx" "windows");  
             echo "entered into ${recipeCreate[$y]} folder"
             Len="${#GOOSystem[@]}"
             for (( k=0; k < "${Len}"; k++ ));
