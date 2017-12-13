@@ -45,6 +45,8 @@ function recipesFromLatest()
     recipesInLatest=("${provider[$j]}"/*)
     for ((i=0; i<${#recipesInLatest[@]}; i++));
     do
+        recipesInLatest[$i]=$(echo ${recipesInLatest[$i]} | rev | cut -d '/' -f 1 | rev);
+        recipesInLatest[$i]=$(echo ${recipesInLatest[$i]} | cut -f1 -d '.');
         echo "${recipesInLatest[$i]}";
         recipesInLatest[$i]=${recipesInLatest[$i]}
     done    
