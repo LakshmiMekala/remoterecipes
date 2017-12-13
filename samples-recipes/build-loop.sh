@@ -114,11 +114,10 @@ function RecipesNewlyAdded()
                 #remotereponame[$j_$x]="${recipeCreate[$x]}";
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
-            echo newly added recipe is "${recipeCreate[@]}" ; 
-            echo newly added recipe-in recipe_registry is "${recipeAdded[@]}" ;
+            echo newly added recipe is "${recipeCreate[@]}" ;
             unset recipeAdded;
-            echo newly added recipe-in recipe_registry is "${recipeAdded[@]}" ;
-            #RecipesToBeCreated ;
+            echo after reseting recipeadded is "${recipeAdded[@]}" ;
+            RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
