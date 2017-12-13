@@ -418,18 +418,22 @@ function recipeInfo()
         pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
         echo "alert json 4" ;
         ls;
+        cat TIBCOSoftware_Engineering-[0].json
         echo "alert json 5" ;
         for (( j = 0; j < $array_length; j++ ))
         do        
         jq -s '.' "${provider[$j]}-*".json > "recipe-[$j]".json
         done
-        jq -s '.' recipe-*.json > recipeinfo.json
-        echo "alert json 5" ;
-        cat recipeinfo.json;
+        echo "alert json 9" ;
+        ls
+        echo "alert json 10" ;
+        jq -s '.' "recipe-*.json" > recipeinfo.json
         echo "alert json 6" ;
+        cat recipeinfo.json;
+        echo "alert json 7" ;
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
-        echo "alert json 6" ;
+        echo "alert json 8" ;
         rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
         popd ;
 
