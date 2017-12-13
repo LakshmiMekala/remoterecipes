@@ -248,7 +248,7 @@ function recipe_registry()
                     echo "----------${Gateway[$x]}----------------"
                 done    
                 echo "list of gws available in registry is ${Gateway[@]}";
-                #RecipesNewlyAdded ;
+                RecipesNewlyAdded ;
             done
             #RecipesToBeCreated ;
             #echo ${recipearray[@]};
