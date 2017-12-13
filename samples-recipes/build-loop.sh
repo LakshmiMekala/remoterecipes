@@ -71,9 +71,9 @@ function RecipesToBeDeleted()
                 #declare -p recipeDeleteLatest
                 for (( p=0; p<${#recipeDeleteLatest[@]}; p++ ))
                 do
-                if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeDeleteLatest[$p]}" ]]; then
-                    rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeDeleteLatest[$p]}" ;
-                    echo deleting "${recipeDeleteLatest[$p]}"
+                if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeDeleteLatest[$p]}" ]]; then
+                    rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeDeleteLatest[$p]}" ;
+                    echo deleting "${recipeDeleteLatest[$p]}";
                 fi
                 done
 		#RecipesNewlyAdded ;
