@@ -120,7 +120,7 @@ function RecipesNewlyAdded()
             #echo after reseting recipeadded is "${recipeAdded[@]}" ;
             unset recipeTOCreate;
             #echo after reseting recipetocreate is "${recipeTOCreate[@]}" ;
-            #RecipesToBeCreated ;
+            RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -222,7 +222,7 @@ function recipe_registry()
                     Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
                     echo "----------${Gateway[$x]}----------------"
                     #recipeCreate[$y]=${Gateway[$x]} ;
-                    #recipeInfo ;
+                    recipeInfo ;
                     if [[ $OPTIMIZE = TRUE ]] ; then
                         if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
                             # echo "${Gateway[$x]} found in current commit" ;
@@ -375,15 +375,15 @@ function recipeInfo()
     featuredvalue=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_featured) ;
     sourceURL=https://github.com/TIBCOSoftware/mashling-recipes/tree/master/recipes/${Gateway[$x]} ;
     echo "$sourceURL";
-    JSONURL=/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
-    IMAGEURL=/${Gateway[$x]}/$displayImage ;
-    MACURL=/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
-    LINUXURL=/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
-    WINDOWSURL=/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
+    JSONURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
+    IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
+    MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
+    LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
+    WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
 
-    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/recipe1-[$x].json ;
+    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}"-[$x].json ;
     echo "alert json 3" ;
-    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/recipe1-[$x].json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/recipe-[$x].json ;
+    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/recipe1-[$x].json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}"-[$x].json ;
     #fi
 }
 
@@ -447,7 +447,10 @@ function recipeInfo()
         cp -r $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/* $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest;
         pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
         echo "alert json 4" ;
-        jq -s '.' recipe-*.json > recipeinfo.json
+        for (( j = 0; j < $array_length; j++ ))
+        do        
+        jq -s '.' "${provider[$j]}"-*.json > recipeinfo.json
+        done
         echo "alert json 5" ;
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
