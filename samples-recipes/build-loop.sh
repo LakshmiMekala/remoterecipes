@@ -422,8 +422,11 @@ function recipeInfo()
         echo "alert json 5" ;
         for (( j = 0; j < $array_length; j++ ))
         do
-        cat "${provider[$j]}-*.json";
+        #cat "${provider[$j]}-*.json";
         jq -s '.' ${provider[$j]}-*.json > recipe-[$j].json
+        echo "alert json 11" ;
+        recipe-[$j].json ;
+        echo "alert json 12" ;
         done
         echo "alert json 9" ;
         ls
