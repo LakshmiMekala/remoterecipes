@@ -432,6 +432,7 @@ function recipeInfo()
         for (( j = 0; j < $array_length; j++ ))
         do
             #cat "${provider[$j]}-*.json"; eval xpath_provider='.recipe_repos[$j].provider' ;
+            eval xpath_provider='.recipe_repos[$j].provider' ;
             provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
             provider[$j]=$(echo $provider | tr -d '"') ; 
             echo provider is "${provider[$j]}";
