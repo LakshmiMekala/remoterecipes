@@ -42,7 +42,7 @@ function recipesFromLatest()
 {
     pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
     rm -rf recipeinfo.json recipe_registry.json
-    recipesInLatest=("${remotereponame[$j]}"/*)
+    recipesInLatest=("${provider[$j]}"/*)
     for ((i=0; i<${#recipesInLatest[@]}; i++));
     do
         echo "${recipesInLatest[$i]}";
