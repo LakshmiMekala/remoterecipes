@@ -373,18 +373,26 @@ function recipeInfo()
     idvalue="${Gateway[$x]}" ;
     eval xpath_featured='.recipe_repos[$j].publish[$x].featured' ;
     featuredvalue=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_featured) ;
-    sourceURL=https://github.com/TIBCOSoftware/mashling-recipes/tree/master/recipes/${Gateway[$x]} ;
-    echo "$sourceURL";
+    echo "provider_url";
+    if [[ "${remotereponame[$j]}" == recipes ]] ; then
+        sourceURL=https://github.com/TIBCOSoftware/mashling-recipes/tree/master/recipes/"${Gateway[$x]}" ;
+        echo "$sourceURL";
+    else
+        if [[ $provider_url == *[.git] ]]; then	
+        echo provider_url=${provider_url::-4}
+        fi
+        sourceURL=$provider_url/tree/master/"${Gateway[$x]}" ;
+        echo "$sourceURL";
+    fi     
+    # sourceURL=https://github.com/TIBCOSoftware/mashling-recipes/tree/master/recipes/${Gateway[$x]} ;
+    # echo "$sourceURL";
     JSONURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
-    echo JSONURL="$JSONURL";
-    echo abc="${provider[$j]}-[$x]"
-    eval abc="${provider[$j]}-[$x]"
-    echo xyz=$abc;    
     IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
     MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
     LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
     WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
     echo #############################
+    echo JSONURL="$JSONURL";
     echo IMAGEURL="$IMAGEURL";
     echo MACURL="$MACURL";
     echo LINUXURL="$LINUXURL";
@@ -431,8 +439,6 @@ function recipeInfo()
         done
         echo "alert json 9" ;
         ls
-        echo "alert json 10" ;
-        cat recipe-[0].json ;
         echo "alert json 11" ;
         jq -s '.' recipe-*.json > recipeinfo.json
         echo "alert json 6" ;
