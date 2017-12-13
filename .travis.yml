@@ -27,7 +27,7 @@ install:
   
 script:
    - chmod ugo+x ./addremote-url.sh ./as2.sh ./build-update.sh ./loop.sh ./build-loop.sh
-   - ./build-loop.sh
+   - ./build-loop.sh OPTIMIZE=${BUILDFLAGVALUE}
   # - ./addremote-url.sh
   # - ./build-update.sh
   # - ./loop.sh
