@@ -26,8 +26,9 @@ install:
   - mkdir -p master-builds/latest/temp builds/latest
   
 script:
-   - chmod ugo+x ./addremote-url.sh ./as2.sh ./build-update.sh ./loop.sh ./build-loop.sh
-   - ./build-loop.sh OPTIMIZE=${BUILDFLAGVALUE}
+   - chmod ugo+x ./addremote-url.sh ./as2.sh ./build-update.sh ./loop.sh ./build-loop.sh ./final-remoteurl.sh
+   - ./final-remoteurl.sh OPTIMIZE=${BUILDFLAGVALUE}
+  # - ./build-loop.sh OPTIMIZE=${BUILDFLAGVALUE}
   # - ./addremote-url.sh
   # - ./build-update.sh
   # - ./loop.sh
