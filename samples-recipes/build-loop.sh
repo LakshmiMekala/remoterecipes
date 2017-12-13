@@ -429,19 +429,21 @@ function recipeInfo()
         #cat TIBCOSoftware_Engineering-[0].json;
         #cat TIBCOSoftware_Services-[0].json;
         echo "alert json 5" ;
+        # for (( j = 0; j < $array_length; j++ ))
+        # do
+        #     eval xpath_provider='.recipe_repos[$j].provider' ;
+        #     provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
+        #     provider[$j]=$(echo $provider | tr -d '"') ;  
+        #     echo provider is "${provider[$j]}"; 
+        # done
         for (( j = 0; j < $array_length; j++ ))
         do
-            eval xpath_provider='.recipe_repos[$j].provider' ;
+            #cat "${provider[$j]}-*.json"; eval xpath_provider='.recipe_repos[$j].provider' ;
             provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
-            provider[$j]=$(echo $provider | tr -d '"') ;  
-            echo provider is "${provider[$j]}"; 
-        done
-        for (( j = 0; j < $array_length; j++ ))
-        do
-            #cat "${provider[$j]}-*.json";
+            provider[$j]=$(echo $provider | tr -d '"') ; 
             echo value of j= $j and value for provider is ${provider[$j]};
             echo "${provider[$j]}-*.json";
-            echo value of j= $j and value for provider is ${provider[$j]};
+            #echo value of j= $j and value for provider is ${provider[$j]};
             eval provider="${provider[$j]}";
             jq -s '.' $provider-*.json > recipe-[$j].json
             echo "alert json 11" ;
