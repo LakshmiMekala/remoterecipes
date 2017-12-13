@@ -167,6 +167,8 @@ function recipe_registry()
     echo "Found $array_length recipe providers." ;
         for (( j = 0; j < $array_length; j++ ))
             do
+                unset Gateway ;
+                echo *******${Gateway[@]}***************
                 echo "value of j=$j" ;
                 #eval provider and publish
                 eval xpath_publish='.recipe_repos[$j].publish' ;
@@ -238,6 +240,13 @@ function recipe_registry()
                         y=$y+1;
                     fi                    
                 done
+                for (( x=0; x<$publish_length; x++ ))
+                do
+                    eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
+                    Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
+                    Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
+                    echo "----------${Gateway[$x]}----------------"
+                done    
                 echo "list of gws available in registry is ${Gateway[@]}";
                 #RecipesNewlyAdded ;
             done
