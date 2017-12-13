@@ -81,7 +81,7 @@ function RecipesToBeDeleted()
 
 function RecipesNewlyAdded()
 {
-    recipesFromLatest ;
+    #recipesFromLatest ;
     #eval recipeAdded=recipe[$j]Added
     recipeAdded=()
     echo Gateway arrays are "${recipeCreate[@]}";
@@ -225,9 +225,6 @@ function recipe_registry()
                             if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}" ]] ; then
                                 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}";
                             fi
-                            # echo #################################
-                            # y=$y+1;
-                            # echo #################################
                         else
                             echo "${Gateway[$x]} not found in current commit ";
                         fi
@@ -238,10 +235,11 @@ function recipe_registry()
                         y=$y+1;
                     fi                    
                 done
+                echo "list of gws available in registry is ${Gateway[@]}";
                 RecipesNewlyAdded ;
             done
             #RecipesToBeCreated ;
-            echo ${recipearray[@]};
+            #echo ${recipearray[@]};
 }
 
 function RecipesToBeCreated()
