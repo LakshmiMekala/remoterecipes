@@ -82,7 +82,8 @@ function RecipesToBeDeleted()
 function RecipesNewlyAdded()
 {
     recipesFromLatest ;
-    eval recipeAdded=recipe[$j]Added
+    #eval recipeAdded=recipe[$j]Added
+    unset recipeAdded;
     recipeAdded=()
     echo Gateway arrays are "${recipeCreate[@]}";
     #echo recipes-in latest are "${recipesInLatest[@]}"
