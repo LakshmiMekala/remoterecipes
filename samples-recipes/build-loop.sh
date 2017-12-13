@@ -120,7 +120,7 @@ function RecipesNewlyAdded()
             #echo after reseting recipeadded is "${recipeAdded[@]}" ;
             unset recipeTOCreate;
             #echo after reseting recipetocreate is "${recipeTOCreate[@]}" ;
-            #RecipesToBeCreated ;
+            RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
