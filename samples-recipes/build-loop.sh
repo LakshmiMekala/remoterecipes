@@ -117,7 +117,9 @@ function RecipesNewlyAdded()
             echo newly added recipe is "${recipeCreate[@]}" ;
             unset recipeAdded;
             echo after reseting recipeadded is "${recipeAdded[@]}" ;
-            RecipesToBeCreated ;
+            unset recipeTOCreate;
+            echo after reseting recipetocreate is "${recipeTOCreate[@]}" ;
+            #RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -232,8 +234,6 @@ function recipe_registry()
                     else
                         # echo "recipe needs to be created from full build"
                         recipeCreate[$y]=${Gateway[$x]} ;
-                        #recipearray[$j_$y]="${Gateway[$x]}";
-                        #echo =================="${recipearray[$j_$y]}"=================;
                         y=$y+1;
                     fi                    
                 done
