@@ -85,6 +85,8 @@ function RecipesNewlyAdded()
     #eval recipeAdded=recipe[$j]Added
     recipeAdded=()
     echo Gateway arrays are "${recipeCreate[@]}";
+    echo ======registry is "${Gateway[@]}"======;
+    echo ======latest is "${recipesInLatest[@]}"=======;
     #echo recipes-in latest are "${recipesInLatest[@]}"
             for z in "${Gateway[@]}"; do
                 skip=
@@ -113,11 +115,11 @@ function RecipesNewlyAdded()
                 #remotereponame[$j_$x]="${recipeCreate[$x]}";
                 echo ++++++++++${remotereponame[$j_$x]}++++++++++++++
             done
-            echo newly added recipe is "${recipeCreate[@]}" ;
+            echo FInal list of recipes to be built "${recipeCreate[@]}" ;
             unset recipeAdded;
-            echo after reseting recipeadded is "${recipeAdded[@]}" ;
+            #echo after reseting recipeadded is "${recipeAdded[@]}" ;
             unset recipeTOCreate;
-            echo after reseting recipetocreate is "${recipeTOCreate[@]}" ;
+            #echo after reseting recipetocreate is "${recipeTOCreate[@]}" ;
             #RecipesToBeCreated ;
 }
 
