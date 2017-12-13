@@ -373,7 +373,7 @@ function recipeInfo()
     idvalue="${Gateway[$x]}" ;
     eval xpath_featured='.recipe_repos[$j].publish[$x].featured' ;
     featuredvalue=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_featured) ;
-    echo "provider_url";
+    echo "$provider_url";
     if [[ "${remotereponame[$j]}" == recipes ]] ; then
         sourceURL=https://github.com/TIBCOSoftware/mashling-recipes/tree/master/recipes/"${Gateway[$x]}" ;
         echo "$sourceURL";
@@ -429,6 +429,10 @@ function recipeInfo()
         #cat TIBCOSoftware_Engineering-[0].json;
         #cat TIBCOSoftware_Services-[0].json;
         echo "alert json 5" ;
+        for (( j = 0; j < $array_length; j++ ))
+        do
+            echo provider is "${provider[$j]}"; 
+        done
         for (( j = 0; j < $array_length; j++ ))
         do
             #cat "${provider[$j]}-*.json";
