@@ -378,18 +378,21 @@ function recipeInfo()
     JSONURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
     echo JSONURL="$JSONURL";
     echo abc="${provider[$j]}-[$x]"
-    eval abc=abc="${provider[$j]}-[$x]"
-    echo xyz=$abc;
+    eval abc="${provider[$j]}-[$x]"
+    echo xyz=$abc;    
+    IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
+    MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
+    LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
+    WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
     echo #############################
-    # IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
-    # MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
-    # LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
-    # WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
-
-    # jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}"-[$x].json ;
-    # echo "alert json 3" ;
-    # jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/recipe1-[$x].json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}"-[$x].json ;
-    # #fi
+    echo IMAGEURL="$IMAGEURL";
+    echo MACURL="$MACURL";
+    echo LINUXURL="$LINUXURL";
+    echo WINDOWSURL="$WINDOWSURL";
+    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}-[$x]".json ;
+    echo "alert json 3" ;
+    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/recipe1-[$x].json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}-[$x]".json ;
+    #fi
     echo ############################
 }
 
@@ -455,8 +458,9 @@ function recipeInfo()
         echo "alert json 4" ;
         for (( j = 0; j < $array_length; j++ ))
         do        
-        jq -s '.' "${provider[$j]}"-*.json > recipeinfo.json
+        jq -s '.' "${provider[$j]}"-*.json > "recipe-[$j]".json
         done
+        jq -s '.' recipe-*.json > recipeinfo.json
         echo "alert json 5" ;
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
