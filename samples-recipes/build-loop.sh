@@ -224,15 +224,17 @@ function recipe_registry()
                     #recipeCreate[$y]=${Gateway[$x]} ;
                     recipeInfo ;
                     if [[ $OPTIMIZE = TRUE ]] ; then
-                        if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
-                            # echo "${Gateway[$x]} found in current commit" ;
-                            recipeCreate[$y]=${Gateway[$x]} ;
-                            if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}" ]] ; then
-                                rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${recipeCreate[$y]}";
+                        if [[ "${remotereponame[$j]}" == recipes ]] ; then
+                            if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
+                                # echo "${Gateway[$x]} found in current commit" ;
+                                recipeCreate[$y]=${Gateway[$x]} ;
+                                if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}" ]] ; then
+                                    rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}";
+                                fi
+                            else
+                                echo "${Gateway[$x]} not found in current commit ";
                             fi
-                        else
-                            echo "${Gateway[$x]} not found in current commit ";
-                        fi
+                        fi    
                         #recipeInfo ;
                     else
                         # echo "recipe needs to be created from full build"
