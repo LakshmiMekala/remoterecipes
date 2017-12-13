@@ -431,15 +431,15 @@ function recipeInfo()
         echo "alert json 5" ;
         for (( j = 0; j < $array_length; j++ ))
         do
-        #cat "${provider[$j]}-*.json";
-        echo value of j= $j and value for provider is ${provider[$j]}
-        echo "${provider[$j]}-*.json";;
-        echo value of j= $j and value for provider is ${provider[$j]}
-        eval provider="${provider[$j]}";
-        jq -s '.' $provider-*.json > recipe-[$j].json
-        echo "alert json 11" ;
-        #cat recipe-[$j].json ;
-        #echo "alert json 12" ;
+            #cat "${provider[$j]}-*.json";
+            echo value of j= $j and value for provider is ${provider[$j]};
+            echo "${provider[$j]}-*.json";
+            echo value of j= $j and value for provider is ${provider[$j]};
+            eval provider="${provider[$j]}";
+            jq -s '.' $provider-*.json > recipe-[$j].json
+            echo "alert json 11" ;
+            #cat recipe-[$j].json ;
+            #echo "alert json 12" ;
         done
         echo "alert json 9" ;
         ls
