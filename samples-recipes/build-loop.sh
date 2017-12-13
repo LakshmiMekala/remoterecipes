@@ -391,7 +391,7 @@ function recipeInfo()
     echo WINDOWSURL="$WINDOWSURL";
     jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json ;
     echo "alert json 3" ;
-    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}-[$x]".json ;
+    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}-[$x]".json ;
     #fi
     echo ############################
 }
@@ -417,12 +417,16 @@ function recipeInfo()
         cp -r $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/* $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest;
         pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
         echo "alert json 4" ;
+        ls;
+        echo "alert json 5" ;
         for (( j = 0; j < $array_length; j++ ))
         do        
-        jq -s '.' "${provider[$j]}"-*.json > "recipe-[$j]".json
+        jq -s '.' "${provider[$j]}-*".json > "recipe-[$j]".json
         done
         jq -s '.' recipe-*.json > recipeinfo.json
         echo "alert json 5" ;
+        cat recipeinfo.json;
+        echo "alert json 6" ;
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
         cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
         echo "alert json 6" ;
