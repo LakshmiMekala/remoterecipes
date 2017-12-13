@@ -212,11 +212,13 @@ function recipe_registry()
                 recipeCreate=()
                 recipearray=()
                 y=0;
+                echo "$publish_length" ;
                 for (( x=0; x<$publish_length; x++ ))
                 do
                     eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
                     Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
                     Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
+                    echo "----------${Gateway[$x]}----------------"
                     #recipeCreate[$y]=${Gateway[$x]} ;
                     #recipeInfo ;
                     if [[ $OPTIMIZE = TRUE ]] ; then
