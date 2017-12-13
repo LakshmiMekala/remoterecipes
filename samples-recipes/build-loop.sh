@@ -82,7 +82,8 @@ function RecipesToBeDeleted()
 function RecipesNewlyAdded()
 {
     recipesFromLatest ;
-    recipe[$j]Added=()
+    eval recipeAdded=recipe[$j]Added
+    recipeAdded=()
     echo Gateway arrays are "${recipeCreate[@]}";
     #echo recipes-in latest are "${recipesInLatest[@]}"
             for z in "${Gateway[@]}"; do
@@ -90,15 +91,15 @@ function RecipesNewlyAdded()
                 for l in "${recipesInLatest[@]}"; do
                     [[ $z == $l ]] && { skip=1; break; }
                 done
-                [[ -n $skip ]] || recipe[$j]Added+=("$z")
+                [[ -n $skip ]] || recipeAdded+=("$z")
             done
         echo #####################################################
-		echo newly added recipe-in recipe_registry is "${recipe[$j]Added[@]}" ;
+		echo newly added recipe-in recipe_registry is "${recipeAdded[@]}" ;
         echo "recipeCreate=${recipeCreate[@]}";
         echo "recipeTOCreate=${recipeTOCreate[@]}";
         echo #####################################################
         ###"${recipeTOCreate[@]}"
-        recipeTOCreate=$(echo "${recipe[$j]Added[@]}" "${recipeCreate[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') ;        
+        recipeTOCreate=$(echo "${recipeAdded[@]}" "${recipeCreate[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') ;        
         IFS=\  read -a recipeCreate <<<"$recipeTOCreate" ;
         set | grep ^IFS= ;
         #separating array by line
