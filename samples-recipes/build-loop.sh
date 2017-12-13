@@ -426,18 +426,20 @@ function recipeInfo()
         pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
         echo "alert json 4" ;
         ls;
-        cat TIBCOSoftware_Engineering-[0].json;
-        cat TIBCOSoftware_Services-[0].json;
+        #cat TIBCOSoftware_Engineering-[0].json;
+        #cat TIBCOSoftware_Services-[0].json;
         echo "alert json 5" ;
         for (( j = 0; j < $array_length; j++ ))
         do
         #cat "${provider[$j]}-*.json";
-        echo "${provider[$j]}-*.json"
+        echo value of j= $j and value for provider is ${provider[$j]}
+        echo "${provider[$j]}-*.json";;
+        echo value of j= $j and value for provider is ${provider[$j]}
         eval provider="${provider[$j]}";
         jq -s '.' $provider-*.json > recipe-[$j].json
         echo "alert json 11" ;
-        cat recipe-[$j].json ;
-        echo "alert json 12" ;
+        #cat recipe-[$j].json ;
+        #echo "alert json 12" ;
         done
         echo "alert json 9" ;
         ls
