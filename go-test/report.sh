@@ -5,6 +5,7 @@ namefolder=${name:14} ;
 echo "$namefolder";
 
 pushd $GOPATH/src/github.com/TIBCOSoftware/mashling ;
+go-test-html gotest_stdout_file gotest_stderr_file go-test-result.html
     if [ -n "${TRAVIS_TAG}" ]; then
         destFolder="$namefolder-${TRAVIS_TAG}"
     elif [ -z "${TRAVIS_TAG}" ]; then
