@@ -18,10 +18,12 @@ install:
   # - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone -b gotests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
-  - cd remoterecipes/go-test
+  - pushd remoterecipes/go-test
 script:  
   - chmod ugo+x ./report.sh
   - ./report.sh
+  - popd
+  - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
 # deploy:
