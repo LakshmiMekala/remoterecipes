@@ -30,6 +30,5 @@ after_script:
 addons:
   artifacts:
     # ...
-    #working_dir: $GOPATH/src/github.com/TIBCOSoftware/mashling/$destFolder
     paths:
     - $(git ls-files -o | tr "\n" ":")
