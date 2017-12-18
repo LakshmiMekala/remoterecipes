@@ -4,6 +4,7 @@ name="${TRAVIS_REPO_SLUG}" ;
 namefolder=${name:14} ;
 echo "$namefolder";
 
+pushd $HOME
     if [ -n "${TRAVIS_TAG}" ]; then
         destFolder="$namefolder-${TRAVIS_TAG}"
     elif [ -z "${TRAVIS_TAG}" ]; then
@@ -16,11 +17,13 @@ echo "$namefolder";
     echo "Creating folder - $destFolder /"
     cd "$destFolder";
 
-pushd $GOPATH/src/github.com/TIBCOSoftware/mashling ;
+#pushd $GOPATH/src/github.com/TIBCOSoftware/mashling ;
 
-mkdir -p "$destFolder";
-cd "$destFolder";
-cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/$destFolder/go-test-result.html" ;
+#mkdir -p "$destFolder";
+#cd "$destFolder";
+#cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/$destFolder/go-test-result.html" ;
+cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$HOME/$destFolder" ;
 echo "files in directory";
 ls;
+cp 
 popd;
