@@ -2,8 +2,19 @@
 
 name="${TRAVIS_REPO_SLUG}" ;
 namefolder=${name:14} ;
+echo "$namefolder";
 
-destFolder="$namefolder-${TRAVIS_TAG}"
+    if [ -n "${TRAVIS_TAG}" ]; then
+        destFolder="$namefolder-${TRAVIS_TAG}"
+    elif [ -z "${TRAVIS_TAG}" ]; then
+        destFolder="$namefolder-${TRAVIS_BUILD_NUMBER}"
+    fi
+
+    if [ ! -d "$destFolder" ]; then
+        mkdir "$destFolder";
+    fi
+    echo "Creating folder - $destFolder /"
+    cd "$destFolder";
 
 pushd $GOPATH/src/github.com/TIBCOSoftware/mashling ;
 

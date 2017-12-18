@@ -41,4 +41,4 @@ addons:
     # ...
     #working_dir: $GOPATH/src/github.com/TIBCOSoftware/mashling/$destFolder
     paths:
-    - $GOPATH/src/github.com/TIBCOSoftware/mashling/$destFolder
+    - $(git ls-files -o | tr "\n" ":")
