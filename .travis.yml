@@ -12,10 +12,10 @@ install:
   - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
   - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
-  # - godep restore
-  # - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
-  # - go-test-html gotest_stdout_file gotest_stderr_file go-test-result.html
-  # - make all
+  - godep restore
+  - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
+  - go-test-html gotest_stdout_file gotest_stderr_file go-test-result.html
+  - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone -b gotests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
   - pushd remoterecipes/go-test
@@ -26,17 +26,6 @@ script:
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
-# deploy:
-#   provider: s3
-#   access_key_id: $SITE_KEY
-#   secret_access_key: $SITE_KEY_SECRET
-#   bucket: $AWS_BUCKET
-#   region: $AWS_REGION
-#   skip_cleanup: true
-#   on:
-#     all_branches: true
-#   local_dir: $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds
-#   upload-dir: master-builds
   
 addons:
   artifacts:
