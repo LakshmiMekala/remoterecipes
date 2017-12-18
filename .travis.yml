@@ -12,10 +12,10 @@ install:
   - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
   - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
-  - godep restore
-  - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
-  - go-test-html gotest_stdout_file gotest_stderr_file go-test-result.html
-  - make all
+  # - godep restore
+  # - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
+  # - go-test-html gotest_stdout_file gotest_stderr_file go-test-result.html
+  # - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone -b gotests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
   - cd remoterecipes/go-test
