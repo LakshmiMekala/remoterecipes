@@ -158,6 +158,7 @@ function recipe_registry()
 			eval xpath_provider='.recipe_repos[$j].provider' ;
 			provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
 			provider[$j]=$(echo $provider | tr -d '"') ;
+            provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ;
 			echo provider is "${provider[$j]}";
 			#remote_recipes;  
 			if [[ "$GOOS" == linux ]]; then
@@ -370,7 +371,8 @@ for (( j = 0; j < $array_length; j++ ))
 do
 	eval xpath_provider='.recipe_repos[$j].provider' ;
 	provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
-	provider[$j]=$(echo $provider | tr -d '"') ; 
+	provider[$j]=$(echo $provider | tr -d '"') ;
+    provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ; 
 	echo provider is "${provider[$j]}";
 	eval provider="${provider[$j]}";
 	jq -s '.' $provider-*.json > recipe-[$j].json
