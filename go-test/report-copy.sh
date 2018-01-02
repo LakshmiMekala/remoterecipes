@@ -1,5 +1,7 @@
 #!/bin/bash
 
+name="${TRAVIS_REPO_SLUG}" ;
+namefolder=${name:14} ;
 
 mkdir ${HOME}/.aws
 cat > ${HOME}/.aws/credentials <<EOL
@@ -32,8 +34,8 @@ create_dest_directory ;
 
 ls;
 
-cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports/$destFolder/go-test-result.html"
-cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports/latest/go-test-result.html"
+cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports/$destFolder"
+cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports/latest"
 
 aws s3 cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports" "s3://$AWS_BUCKET/LakshmiMekala/remoterecipes/go-tests" --recursive
 
