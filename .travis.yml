@@ -5,6 +5,7 @@ before_install:
   - go get github.com/constabulary/gb/...
   - go get -u github.com/ains/go-test-html
   - go get -u github.com/tools/godep/...
+  - pip install --user awscli
 install:  
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
   - cd $GOPATH/src/github.com/TIBCOSoftware
