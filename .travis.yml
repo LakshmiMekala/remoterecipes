@@ -14,21 +14,20 @@ install:
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
   - godep restore
   - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
-#  - go-test-html gotest_stdout_file gotest_stderr_file go-test-result.html
   - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
-  - git clone -b gotests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
+  - git clone -b gotest https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
   - pushd remoterecipes/go-test
 script:  
-  - chmod ugo+x ./report.sh
-  - ./report.sh
+  - chmod ugo+x ./report-copy.sh
+  - ./report-copy.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
   
-addons:
-  artifacts:
-    # ...
-    paths:
-    - $(git ls-files -o | tr "\n" ":")
+# addons:
+#   artifacts:
+#     # ...
+#     paths:
+#     - $(git ls-files -o | tr "\n" ":")
