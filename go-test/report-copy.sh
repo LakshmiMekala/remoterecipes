@@ -10,10 +10,10 @@ aws_access_key_id = ${SITE_KEY}
 aws_secret_access_key = ${SITE_KEY_SECRET}
 EOL
 
-if [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then    
-    echo "cleaning S3 folder"
-    aws s3 rm s3://$AWS_BUCKET/LakshmiMekala/remoterecipes/go-tests/latest --recursive
-fi
+# if [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then    
+#     echo "cleaning S3 folder"
+#     aws s3 rm s3://$AWS_BUCKET/LakshmiMekala/remoterecipes/go-tests/latest --recursive
+# fi
 
 function create_dest_directory ()
 {
@@ -37,7 +37,7 @@ mkdir -p reports;
 create_dest_directory ;
 cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports/$DESTFOLDER"
 cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/go-test-result.html" "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports/latest"
-aws s3 cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports" "s3://$AWS_BUCKET/LakshmiMekala/remoterecipes/go-tests" --recursive
+aws s3 cp "$GOPATH/src/github.com/TIBCOSoftware/mashling/reports" "s3://$AWS_BUCKET/LakshmiMekala/remoterecipes" --recursive
 popd ;
 
 
