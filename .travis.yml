@@ -17,11 +17,11 @@ install:
   - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
   - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
-  - git clone -b gotest https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
-  - pushd remoterecipes/go-test
+  - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
+  - pushd remoterecipes/samples-recipes
 script:  
-  - chmod ugo+x ./report-copy.sh
-  - ./report-copy.sh
+  - chmod ugo+x ./sanity-tests.sh
+  - ./sanity-tests.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
