@@ -20,8 +20,8 @@ install:
   - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
   - pushd remoterecipes/samples-recipes
 script:  
-  - chmod ugo+x ./sanity-tests.sh
-  - ./sanity-tests.sh
+  - chmod ugo+x ./sanity-test.sh
+  - ./sanity-test.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
