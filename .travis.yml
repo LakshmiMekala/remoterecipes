@@ -12,7 +12,7 @@ install:
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone https://github.com/TIBCOSoftware/mashling.git
-  - git clone -b feature-remoterecipe-enablementhttps://github.com/TIBCOSoftware/mashling-recipes.git 
+  - git clone -b feature-remoterecipe-enablement https://github.com/TIBCOSoftware/mashling-recipes.git 
   - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
   - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
