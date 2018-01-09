@@ -2,7 +2,7 @@
 
 function sanity-test()
 {
-    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${Gateway[$x]}/${Gateway[$x]}.sh" ]];then
+    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${Gateway[$x]}/${Gateway[$x]}.sh" ]];then
         chmod 777 "${Gateway[$x]}".zip ;
 		unzip -o "${Gateway[$x]}".zip ;
         ./"${Gateway[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${Gateway[$x]}/${Gateway[$x]}.sh";
@@ -11,9 +11,8 @@ function sanity-test()
     fi
 }
 
-pushd $GOPATH
+cd $GOPATH
 mkdir -p sanity;
-popd ;
 cd sanity;
 
 cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest $GOPATH/sanity

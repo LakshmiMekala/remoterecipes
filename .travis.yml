@@ -1,5 +1,4 @@
 language : go 
-
 before_install:
   - "echo -e \"machine github.com\n  login ${GITHUB_USER_TOKEN}\" >> ~/.netrc"
   - go get github.com/constabulary/gb/...
@@ -20,15 +19,10 @@ install:
   - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git remoterecipes
   - pushd remoterecipes/samples-recipes
 script:  
-  - chmod ugo+x ./sanity-test.sh
+  - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh
+  - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
   - ./sanity-test.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
-  
-# addons:
-#   artifacts:
-#     # ...
-#     paths:
-#     - $(git ls-files -o | tr "\n" ":")
