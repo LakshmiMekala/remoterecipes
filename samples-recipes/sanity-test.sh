@@ -3,9 +3,12 @@
 function sanity-test()
 {
     if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${Gateway[$x]}/${Gateway[$x]}.sh" ]];then
+        cd ${remotereponame[$j]};
         chmod 777 "${Gateway[$x]}".zip ;
 		unzip -o "${Gateway[$x]}".zip ;
+        cd "${Gateway[$x]}";
         ./"${Gateway[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${Gateway[$x]}/${Gateway[$x]}.sh";
+        cd ..
     else
         STATUS= "NA"
     fi
