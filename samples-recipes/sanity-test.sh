@@ -2,15 +2,16 @@
 
 function sanity-test()
 {
-    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${Gateway[$x]}/${Gateway[$x]}.sh" ]];then
-        cd ${remotereponame[$j]}/${Gateway[$x]};
-        chmod 777 "${Gateway[$x]}-linux".zip ;
-		unzip -o "${Gateway[$x]}-linux".zip ;
-        cd "${Gateway[$x]}";
-        ./"${Gateway[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${Gateway[$x]}/${Gateway[$x]}.sh";
-        cd ../..
+    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then
+        cd "${provider[$j]}/${remotereponame[$j]}/${recipeCreate[$x]}";
+        chmod 777 "${recipeCreate[$x]}-linux".zip ;
+		unzip -o "${recipeCreate[$x]}-linux".zip ;
+        cd "${recipeCreate[$x]}";
+        ./"${recipeCreate[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}/${recipeCreate[$x]}.sh";
+        cd ../../.. ;
     else
         STATUS= "NA"
+        echo $STATUS
     fi
 }
 
@@ -24,7 +25,6 @@ function recipesToBeTested()
     set | grep ^recipeCreate=\\\|^recipeCreated= ;  
 }
 
-
 cd $GOPATH
 mkdir -p sanity;
 cd sanity;
@@ -32,13 +32,8 @@ cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/lat
 
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 echo "Found $array_length recipe providers." ;
-    for (( j = 0; j < $array_length; j++ ))
-    do
-        recipeCreated=$(cat $GOPATH/recipes-[$j]);
-        recipesToBeTested;
-        echo "iiiiiiiiiiiiiiiiiiiii"
-        echo gateway array is "${recipeCreate[@]}";
-        echo "jjjjjjjjjjjjjjjjjjjjjjjj";        
+for (( j = 0; j < $array_length; j++ ))
+    do            
         eval xpath_url='.recipe_repos[$j].url' ;
         url=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_url) ;
         provider_url=$(echo $url | tr -d '"') ;
@@ -59,5 +54,15 @@ echo "Found $array_length recipe providers." ;
             echo "${remotereponame[$j]}";
         else
             remotereponame[$j]="$provider_url";
+            echo "${remotereponame[$j]}";
         fi
+        recipeCreated=$(cat $GOPATH/recipes-[$j]);
+        recipesToBeTested;
+        echo "iiiiiiiiiiiiiiiiiiiii"
+        echo gateway array is "${recipeCreate[@]}";
+        echo "jjjjjjjjjjjjjjjjjjjjjjjj";
+        for (( x=0; x<"${#recipeCreate[@]}"; x++ ))
+        do
+            sanity-test;
+        done    
     done
