@@ -24,6 +24,7 @@ array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_
 echo "Found $array_length recipe providers." ;
     for (( j = 0; j < $array_length; j++ ))
     do
+        unset Gateway ;
         eval xpath_publish='.recipe_repos[$j].publish' ;
         publish_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_publish' | length') ;
         echo "Found $publish_length recipes." ;
