@@ -28,45 +28,36 @@ function recipesToBeTested()
 cd $GOPATH
 mkdir -p sanity;
 cd sanity;
-cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder/$provider_url $GOPATH/sanity;
+cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/ $GOPATH/sanity;
 
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 echo "Found $array_length recipe providers." ;
     for (( j = 0; j < $array_length; j++ ))
     do
-    recipeCreated=$(cat $GOPATH/recipes-[$j]);
-    recipesToBeTested;
-    echo "iiiiiiiiiiiiiiiiiiiii"
-    echo gateway array is "${recipeCreate[@]}";
-    echo "jjjjjjjjjjjjjjjjjjjjjjjj"
+        recipeCreated=$(cat $GOPATH/recipes-[$j]);
+        recipesToBeTested;
+        echo "iiiiiiiiiiiiiiiiiiiii"
+        echo gateway array is "${recipeCreate[@]}";
+        echo "jjjjjjjjjjjjjjjjjjjjjjjj";        
+        eval xpath_url='.recipe_repos[$j].url' ;
+        url=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_url) ;
+        provider_url=$(echo $url | tr -d '"') ;
+        eval xpath_provider='.recipe_repos[$j].provider' ;
+        provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
+        provider[$j]=$(echo $provider | tr -d '"') ;
+        provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ;
+        echo provider is "${provider[$j]}";
+        regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'              
+        #checking if url contains http or not
+        if [[ "$provider_url" =~ $regex ]] ; then
+            path_url=$provider_url ;
+            if [[ ! $provider_url == *[.git] ]] ; then
+                path_url=$path_url.git ;    
+            fi
+            remotereponame[$j]=$(echo $path_url | rev | cut -d '/' -f 1 | rev);
+            remotereponame[$j]=$(echo ${remotereponame[$j]} | cut -f1 -d '.');
+            echo "${remotereponame[$j]}";
+        else
+            remotereponame[$j]="$provider_url";
+        fi
     done
-
-
-
-
-
-# array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
-# echo "Found $array_length recipe providers." ;
-#     for (( j = 0; j < $array_length; j++ ))
-#     do
-#         unset Gateway ;
-#         eval xpath_publish='.recipe_repos[$j].publish' ;
-#         publish_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_publish' | length') ;
-#         echo "Found $publish_length recipes." ;
-#         eval xpath_url='.recipe_repos[$j].url' ;
-#         url=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_url) ;
-#         provider_url=$(echo $url | tr -d '"') ;
-#         for (( x=0; x<$publish_length; x++ ))
-#         do
-#             eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
-#             Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
-#             Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
-#         done
-#         echo "${Gateway[@]}" ;
-#         # if [[ $provider_url == recipes ]]; then
-#         #     sanity-test ;
-#         # fi
-#     done
-    
-
-
