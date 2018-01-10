@@ -100,7 +100,7 @@ function RecipesNewlyAdded()
             done
             unset recipeAdded;
             unset recipeTOCreate;
-            RecipesToBeCreated ;
+            #RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -224,6 +224,10 @@ function recipe_registry()
 			done    
 			echo "list of gws available in registry is ${Gateway[@]}";
 			RecipesNewlyAdded ;
+            pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes
+            chmod ugo+x ./sanity-test.sh
+            ./sanity-test.sh
+            popd
 		done
 }
 

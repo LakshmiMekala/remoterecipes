@@ -25,8 +25,8 @@ install:
   - mkdir -p master-builds/latest/temp builds/latest
 script:  
   - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh
-  #- ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
-  - ./sanity-test.sh
+  - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
+  #- ./sanity-test.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
