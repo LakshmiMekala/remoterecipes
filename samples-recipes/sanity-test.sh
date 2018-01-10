@@ -14,20 +14,37 @@ function sanity-test()
     fi
 }
 
-cd $GOPATH
-recipeCreated=$(cat recipes-[$j]);
-mkdir -p sanity;
-cd sanity;
-IFS=\  read -a recipeCreate <<<"$recipeCreated" ;
-set | grep ^IFS= ;
+function recipesToBeTested()
+{
+    IFS=\  read -a recipeCreate <<<"$recipeCreated" ;
+    set | grep ^IFS= ;
     # separating arrays ny line
     IFS=$' \t\n' ;
     # fetching Gateway
-    set | grep ^recipeCreate=\\\|^recipeCreated= ;
-cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder/$provider_url $GOPATH/sanity
-echo "iiiiiiiiiiiiiiiiiiiii"
-echo gateway array is "${recipeCreate[@]}";
-echo "jjjjjjjjjjjjjjjjjjjjjjjj"
+    set | grep ^recipeCreate=\\\|^recipeCreated= ;  
+}
+
+
+cd $GOPATH
+mkdir -p sanity;
+cd sanity;
+cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder/$provider_url $GOPATH/sanity;
+
+array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
+echo "Found $array_length recipe providers." ;
+    for (( j = 0; j < $array_length; j++ ))
+    do
+    recipeCreated=$(cat $GOPATH/recipes-[$j]);
+    recipesToBeTested;
+    echo "iiiiiiiiiiiiiiiiiiiii"
+    echo gateway array is "${recipeCreate[@]}";
+    echo "jjjjjjjjjjjjjjjjjjjjjjjj"
+    done
+
+
+
+
+
 # array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 # echo "Found $array_length recipe providers." ;
 #     for (( j = 0; j < $array_length; j++ ))
