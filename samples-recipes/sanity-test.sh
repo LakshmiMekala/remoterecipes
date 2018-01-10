@@ -15,14 +15,16 @@ function sanity-test()
 }
 
 
-echo "calling function RecipesNewlyAdded"
-./final-remoteurl.sh RecipesNewlyAdded;
-echo "calling function RecipesNewlyAdded"
+# echo "calling function RecipesNewlyAdded"
+# #./final-remoteurl.sh RecipesNewlyAdded;
+# echo "calling function RecipesNewlyAdded"
 cd $GOPATH
 mkdir -p sanity;
 cd sanity;
 cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder/$provider_url $GOPATH/sanity
+echo "iiiiiiiiiiiiiiiiiiiii"
 echo gateway array is "${recipeCreate[@]}";
+echo "jjjjjjjjjjjjjjjjjjjjjjjj"
 # array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 # echo "Found $array_length recipe providers." ;
 #     for (( j = 0; j < $array_length; j++ ))

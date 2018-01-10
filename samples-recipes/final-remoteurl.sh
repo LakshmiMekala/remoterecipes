@@ -227,9 +227,10 @@ function recipe_registry()
             pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes
             echo "entering into sanity test"
             chmod ugo+x ./sanity-test.sh
+            export "${recipeCreate[@]}"
             echo gateway array is "${recipeCreate[@]}";
-            echo "aaaaaaaaaaaaaaaaaaaaaaaa"
             ./sanity-test.sh
+            echo "aaaaaaaaaaabbbbbbbbbbb"
             popd
 		done
 }
