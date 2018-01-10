@@ -225,7 +225,10 @@ function recipe_registry()
 			echo "list of gws available in registry is ${Gateway[@]}";
 			RecipesNewlyAdded ;
             pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes
+            echo "entering into sanity test"
             chmod ugo+x ./sanity-test.sh
+            echo gateway array is "${recipeCreate[@]}";
+            echo "aaaaaaaaaaaaaaaaaaaaaaaa"
             ./sanity-test.sh
             popd
 		done

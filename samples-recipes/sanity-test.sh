@@ -18,7 +18,7 @@ cd $GOPATH
 mkdir -p sanity;
 cd sanity;
 
-cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/$provider_url $GOPATH/sanity
+cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder/$provider_url $GOPATH/sanity
 echo gateway array is "${recipeCreate[@]}";
 # array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 # echo "Found $array_length recipe providers." ;
