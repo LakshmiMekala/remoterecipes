@@ -15,7 +15,7 @@ function sanity-test()
 }
 
 cd $GOPATH
-recipeCreated= $(cat recipes-[$j]);
+recipeCreated=$(cat recipes-[$j]);
 mkdir -p sanity;
 cd sanity;
 IFS=\  read -a recipeCreate <<<"$recipeCreated" ;

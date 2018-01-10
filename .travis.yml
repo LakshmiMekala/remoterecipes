@@ -17,7 +17,6 @@ install:
   - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
   - godep restore
-#  - go test ./... -v 2> >(tee gotest_stderr_file) | tee gotest_stdout_file
   - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git recip1
@@ -26,7 +25,7 @@ install:
 script:  
   - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh
   - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
-  #- ./sanity-test.sh
+  - ./sanity-test.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
