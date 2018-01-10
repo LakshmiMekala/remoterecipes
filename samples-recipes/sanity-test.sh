@@ -3,12 +3,12 @@
 function sanity-test()
 {
     if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${Gateway[$x]}/${Gateway[$x]}.sh" ]];then
-        cd ${remotereponame[$j]};
+        cd ${remotereponame[$j]}/${Gateway[$x]};
         chmod 777 "${Gateway[$x]}-linux".zip ;
 		unzip -o "${Gateway[$x]}-linux".zip ;
         cd "${Gateway[$x]}";
         ./"${Gateway[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${Gateway[$x]}/${Gateway[$x]}.sh";
-        cd ..
+        cd ../..
     else
         STATUS= "NA"
     fi
@@ -23,6 +23,7 @@ mkdir -p sanity;
 cd sanity;
 cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder/$provider_url $GOPATH/sanity
 echo "iiiiiiiiiiiiiiiiiiiii"
+RecipesNewlyAdded
 echo gateway array is "${recipeCreate[@]}";
 echo "jjjjjjjjjjjjjjjjjjjjjjjj"
 # array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
