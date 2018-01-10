@@ -31,3 +31,4 @@ script:
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
+  - "[ -f \"${HOME}/.aws\" ] && rm -f ${HOME}/.aws"
