@@ -12,12 +12,11 @@ function sanity-test()
         echo test=${value[0]}
         for ((i=0;i < ${#value[@]};i++))
         do
-            echo i=$i
             source ./${recipeCreate[$x]}.sh
             value1=($(${value[i]}))
             echo value1=$value1
             sleep 10
-            if [[ $value1 == *"Passed"* ]] 
+            if [[ $value1 == *"PASS"* ]] 
             then
                 echo "{"${recipeCreate[$x]}":"Passed"}"
                 echo ${value[i]}
@@ -30,7 +29,7 @@ function sanity-test()
         popd
     else
         echo "Sanity file does not exist"
-        sed -i "/<\/table>/i\ <tr><td>${recipe[$x]}</td><td>NA</td><td>NA</td></tr>" $GOPATH/$FILENAME
+        sed -i "/<\/table>/i\ <tr><td>${recipeCreate[$x]}</td><td>NA</td><td>NA</td></tr>" $GOPATH/$FILENAME
     fi
 }
 
