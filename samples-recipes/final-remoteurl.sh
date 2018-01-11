@@ -87,6 +87,7 @@ function RecipesNewlyAdded()
 			[[ -n $skip ]] || recipeAdded+=("$z")
 		done
 		echo newly added recipe-in recipe_registry is "${recipeAdded[@]}" ;
+        echo "+++++++++++++++++++++++++++${recipeCreate[@]}+++++++++++++++++++++++++++"
         recipeTOCreate=$(echo "${recipeAdded[@]}" "${recipeCreate[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') ;        
         IFS=\  read -a recipeCreate <<<"$recipeTOCreate" ;
         set | grep ^IFS= ;
@@ -204,9 +205,10 @@ function recipe_registry()
 					if [[ "${remotereponame[$j]}" == recipes ]] ; then
 						if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
 							recipeCreate[$y]=${Gateway[$x]} ;
-							if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}" ]] ; then
-								rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}";
-							fi
+							if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${Gateway[$x]}" ]] ; then
+								rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${Gateway[$x]}";
+                                echo "deleting recipeCreate[$y]-----------${Gateway[$x]}"    
+                            fi
 						else
 							echo "${Gateway[$x]} not found in current commit ";
 						fi
