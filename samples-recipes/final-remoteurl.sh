@@ -308,7 +308,7 @@ function package_gateway()
                     echo "$destfnamelc" ;
                     mv $fnamelc $destfnamelc ;
                 fi
-                if [[ GOOS == linux ]];then
+                if [[ $GOOS == linux ]];then
                     cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$y]}";
                 fi
                 zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
