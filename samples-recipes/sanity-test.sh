@@ -4,7 +4,8 @@ function sanity-test()
 {
     if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then        
         pushd "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}";
-        source ./${recipe[$x]}.sh
+        ls ;
+        source ./${recipeCreate[$x]}.sh
         value=($(get_test_cases))
         sleep 1
         echo ${#value[@]}
@@ -12,18 +13,18 @@ function sanity-test()
         for ((i=0;i < ${#value[@]};i++))
         do
             echo i=$i
-            source ./${recipe[$x]}.sh
+            source ./${recipeCreate[$x]}.sh
             value1=($(${value[i]}))
             echo value1=$value1
             sleep 10
             if [[ $value1 == *"Passed"* ]] 
             then
-                echo "{"${recipe[$x]}":"Passed"}"
+                echo "{"${recipeCreate[$x]}":"Passed"}"
                 echo ${value[i]}
-                sed -i "/<\/table>/i\ <tr><td>${recipe[$x]}</td><td>${value[i]}</td><td>PASS</td></tr>" $GOPATH/$FILENAME
+                sed -i "/<\/table>/i\ <tr><td>${recipeCreate[$x]}</td><td>${value[i]}</td><td>PASS</td></tr>" $GOPATH/$FILENAME
             else
-                echo "{"${recipe[$x]}":"Failed"}"
-                sed -i "/<\/table>/i\ <tr><td>${recipe[$x]}</td><td>${value[i]}</td><td>FAIL</td></tr>" $GOPATH/$FILENAME
+                echo "{"${recipeCreate[$x]}":"Failed"}"
+                sed -i "/<\/table>/i\ <tr><td>${recipeCreate[$x]}</td><td>${value[i]}</td><td>FAIL</td></tr>" $GOPATH/$FILENAME
             fi
         done
         popd
