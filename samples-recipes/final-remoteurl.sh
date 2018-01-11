@@ -308,6 +308,7 @@ function package_gateway()
                     echo "$destfnamelc" ;
                     mv $fnamelc $destfnamelc ;
                 fi
+                cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$y]}";
                 zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
                 cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
                 cd .. ;

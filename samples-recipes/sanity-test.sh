@@ -3,12 +3,19 @@
 function sanity-test()
 {
     if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then
-        cd "${provider[$j]}/${remotereponame[$j]}/${recipeCreate[$x]}";
-        chmod 777 "${recipeCreate[$x]}-linux".zip ;
-		unzip -o "${recipeCreate[$x]}-linux".zip ;
-        cd "${recipeCreate[$x]}";
-        ./"${recipeCreate[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}/${recipeCreate[$x]}.sh";
-        cd ../../.. ;
+        # cd "${provider[$j]}/${remotereponame[$j]}/${recipeCreate[$x]}";
+        # chmod 777 "${recipeCreate[$x]}-linux".zip ;
+		# unzip -o "${recipeCreate[$x]}-linux".zip ;
+        # cd "${recipeCreate[$x]}";
+        # ./"${recipeCreate[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh";
+        # cd ../../.. ;
+        pushd "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}";
+        echo "ppppppppppppppppppppp"
+        ls;
+        echo "qqqqqqqqqqqqqqqqq"
+        chmod ugo+x ./"${recipeCreate[$x]}".sh
+        ./"${recipeCreate[$x]}".sh
+        popd
     else
         STATUS= "NA"
         echo $STATUS
@@ -25,10 +32,10 @@ function recipesToBeTested()
     set | grep ^recipeCreate=\\\|^recipeCreated= ;  
 }
 
-cd $GOPATH
-mkdir -p sanity;
-cd sanity;
-cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest $GOPATH/sanity;
+# cd $GOPATH
+# mkdir -p sanity;
+# cd sanity;
+# cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest $GOPATH/sanity;
 
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 echo "Found $array_length recipe providers." ;
