@@ -102,7 +102,7 @@ function RecipesNewlyAdded()
             unset recipeAdded;
             unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
-            RecipesToBeCreated ;
+            #RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -226,6 +226,7 @@ function recipe_registry()
 				Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
 			done    
 			echo "list of gws available in registry is ${Gateway[@]}";
+            echo gateway array is "${recipeCreate[@]}";
 			RecipesNewlyAdded ;
 		done
 }
