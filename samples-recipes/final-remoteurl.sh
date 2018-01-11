@@ -212,6 +212,7 @@ function recipe_registry()
 						else
 							echo "${Gateway[$x]} not found in current commit ";
 						fi
+                        y=$y+1;
 					fi
 				else
 					echo "recipe needs to be created from full build"
