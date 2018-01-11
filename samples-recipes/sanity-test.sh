@@ -2,23 +2,34 @@
 
 function sanity-test()
 {
-    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then
-        # cd "${provider[$j]}/${remotereponame[$j]}/${recipeCreate[$x]}";
-        # chmod 777 "${recipeCreate[$x]}-linux".zip ;
-		# unzip -o "${recipeCreate[$x]}-linux".zip ;
-        # cd "${recipeCreate[$x]}";
-        # ./"${recipeCreate[$x]}" & ./"$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh";
-        # cd ../../.. ;
+    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then        
         pushd "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$x]}";
-        echo "ppppppppppppppppppppp"
-        ls;
-        echo "qqqqqqqqqqqqqqqqq"
-        chmod ugo+x ./"${recipeCreate[$x]}".sh
-        ./"${recipeCreate[$x]}".sh
+        source ./${recipe[$x]}.sh
+        value=($(get_test_cases))
+        sleep 1
+        echo ${#value[@]}
+        echo test=${value[0]}
+        for ((i=0;i < ${#value[@]};i++))
+        do
+            echo i=$i
+            source ./${recipe[$x]}.sh
+            value1=($(${value[i]}))
+            echo value1=$value1
+            sleep 10
+            if [[ $value1 == *"Passed"* ]] 
+            then
+                echo "{"${recipe[$x]}":"Passed"}"
+                echo ${value[i]}
+                sed -i "/<\/table>/i\ <tr><td>${recipe[$x]}</td><td>${value[i]}</td><td>PASS</td></tr>" $GOPATH/$FILENAME
+            else
+                echo "{"${recipe[$x]}":"Failed"}"
+                sed -i "/<\/table>/i\ <tr><td>${recipe[$x]}</td><td>${value[i]}</td><td>FAIL</td></tr>" $GOPATH/$FILENAME
+            fi
+        done
         popd
     else
-        STATUS= "NA"
-        echo $STATUS
+        echo "Sanity file does not exist"
+        sed -i "/<\/table>/i\ <tr><td>${recipe[$x]}</td><td>NA</td><td>NA</td></tr>" $GOPATH/$FILENAME
     fi
 }
 
@@ -32,10 +43,19 @@ function recipesToBeTested()
     set | grep ^recipeCreate=\\\|^recipeCreated= ;  
 }
 
-# cd $GOPATH
-# mkdir -p sanity;
-# cd sanity;
-# cp $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest $GOPATH/sanity;
+cd $GOPATH
+FILENAME="SanityReport.html"
+HTML="<!DOCTYPE html>
+<html>
+<table border=\"1\">
+  <tr>
+    <th>Recipe</th>
+    <th>Testcase</th>
+    <th>Status</th>
+  </tr>
+</table>
+</html>"
+echo $HTML >> $FILENAME
 
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 echo "Found $array_length recipe providers." ;
@@ -73,3 +93,6 @@ for (( j = 0; j < $array_length; j++ ))
             sanity-test;
         done    
     done
+
+cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
+cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds     
