@@ -12,7 +12,7 @@ before_install:
 install:  
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
   - cd $GOPATH
-  - wget "http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.2.1/kafka_2.11-0.8.2.1.tgz" -O $GOPATH/kafka.tgz
+  - wget http://mirror.fibergrid.in/apache/kafka/0.10.0.1/kafka_2.10-0.10.0.1.tgz -O $GOPATH/kafka.tgz
   - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
   - tar -xvzf $GOPATH/kafka.tgz --strip 1
   - cd $GOPATH/src/github.com/TIBCOSoftware
