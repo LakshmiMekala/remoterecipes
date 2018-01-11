@@ -58,6 +58,14 @@ HTML="<!DOCTYPE html>
 </html>"
 echo $HTML >> $FILENAME
 
+name="${TRAVIS_REPO_SLUG}" ;
+namefolder=${name:14} ;
+if [ -n "${TRAVIS_TAG}" ]; then
+    destFolder="$namefolder-${TRAVIS_TAG}"
+elif [ -z "${TRAVIS_TAG}" ]; then
+    destFolder="$namefolder-${TRAVIS_BUILD_NUMBER}"
+fi
+
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 echo "Found $array_length recipe providers." ;
 for (( j = 0; j < $array_length; j++ ))
@@ -96,4 +104,4 @@ for (( j = 0; j < $array_length; j++ ))
     done
 
 cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
-cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds     
+cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder     
