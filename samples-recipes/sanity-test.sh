@@ -12,17 +12,16 @@ function sanity-test()
         echo test=${value[0]}
         for ((i=0;i < ${#value[@]};i++))
         do
-            source ./${recipeCreate[$x]}.sh
-            value1=($(${value[i]}))
+            #source ./${recipeCreate[$x]}.sh
+            value1=$(${value[i]})
             echo value1=$value1
             sleep 10
-            if [[ $value1 == *"PASS"* ]] 
-            then
-                echo "{"${recipeCreate[$x]}":"Passed"}"
+            if [[ $value1 == *"PASS"* ]];  then
+                echo "${recipeCreate[$x]}":"Passed"
                 echo ${value[i]}
                 sed -i "/<\/table>/i\ <tr><td>${recipeCreate[$x]}</td><td>${value[i]}</td><td>PASS</td></tr>" $GOPATH/$FILENAME
             else
-                echo "{"${recipeCreate[$x]}":"Failed"}"
+                echo "${recipeCreate[$x]}":"Failed"
                 sed -i "/<\/table>/i\ <tr><td>${recipeCreate[$x]}</td><td>${value[i]}</td><td>FAIL</td></tr>" $GOPATH/$FILENAME
             fi
         done
