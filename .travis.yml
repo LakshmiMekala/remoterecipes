@@ -3,6 +3,7 @@ before_install:
   - "echo -e \"machine github.com\n  login ${GITHUB_USER_TOKEN}\" >> ~/.netrc"
   - go get github.com/constabulary/gb/...
   - go get -u github.com/ains/go-test-html
+  - sudo apt-get install zookeeperd
   - go get -u github.com/tools/godep/...
   - sudo apt-add-repository ppa:duggan/jo --yes
   - sudo apt-get update -q
@@ -10,6 +11,10 @@ before_install:
   - pip install --user awscli
 install:  
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
+  - cd $GOPATH
+  - wget "http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.2.1/kafka_2.11-0.8.2.1.tgz" -O $GOPATH/kafka.tgz
+  - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
+  - tar -xvzf $GOPATH/kafka.tgz --strip 1
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone https://github.com/TIBCOSoftware/mashling.git
   - git clone https://github.com/LakshmiMekala/sampleabc.git mashling-recipes
