@@ -32,24 +32,6 @@ function sanity-test()
     fi
 }
 
-function recipesUnChanged()
-{
-    unset unchangedrecipes;
-    unchangedrecipes=()
-    for z in "${Gateway[@]}"; do
-        skip=
-        for l in "${recipeCreate[@]}"; do
-            [[ $z == $l ]] && { skip=1; break; }
-        done
-        [[ -n $skip ]] || unchangedrecipes+=("$z")
-    done
-    echo "unchanged recipes ${unchangedrecipes[@]}"
-    for (( p=0; p<${#unchangedrecipes[@]}; p++ ))
-    do    
-    sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${unchangedrecipes[$p]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
-    done
-}
-
 function recipesToBeTested()
 {
     IFS=\  read -a recipeCreate <<<"$recipeCreated" ;
@@ -117,17 +99,7 @@ for (( j = 0; j < $array_length; j++ ))
         for (( x=0; x<"${#recipeCreate[@]}"; x++ ))
         do
             sanity-test;
-        done
-        eval xpath_publish='.recipe_repos[$j].publish' ;
-        publish_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_publish' | length') ;
-        unset Gateway;
-        for (( x=0; x<$publish_length; x++ ))
-        do
-            eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
-            Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
-            Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;           
-        done
-        recipesUnChanged;    
+        done   
     done
 
 
