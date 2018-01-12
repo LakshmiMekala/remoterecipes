@@ -19,16 +19,16 @@ function sanity-test()
             if [[ $value1 == *"PASS"* ]];  then
                 echo "${recipeCreate[$x]}":"Passed"
                 echo ${value[i]}
-                sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td>PASS<\/td><td  class="success">PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="success">PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
             else
                 echo "${recipeCreate[$x]}":"Failed"
-                sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td>FAIL<\/td><td  class="error">FAIL<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="error">FAIL<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
             fi
         done
         popd
     else
         echo "Sanity file does not exist"
-        sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><td  class="success">PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+        sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td  class="success">PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
     fi
 }
 
