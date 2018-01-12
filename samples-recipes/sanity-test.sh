@@ -43,7 +43,7 @@ function recipesUnChanged()
         done
         [[ -n $skip ]] || unchangedrecipes+=("$z")
     done
-    echo "unchnaged recipes ${unchangedrecipes[@]}"
+    echo "unchanged recipes ${unchangedrecipes[@]}"
     for (( p=0; p<${#unchangedrecipes[@]}; p++ ))
     do    
     sed -i "s/<\/table>/<tr><td>${unchangedrecipes[$p]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
@@ -119,6 +119,7 @@ for (( j = 0; j < $array_length; j++ ))
         done
         eval xpath_publish='.recipe_repos[$j].publish' ;
         publish_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_publish' | length') ;
+        unset Gateway;
         for (( x=0; x<$publish_length; x++ ))
         do
             eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
