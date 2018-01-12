@@ -19,16 +19,16 @@ function sanity-test()
             if [[ $value1 == *"PASS"* ]];  then
                 echo "${recipeCreate[$x]}":"Passed"
                 echo ${value[i]}
-                sed -i "s/<\/table>/<tr><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td>PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td>PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
             else
                 echo "${recipeCreate[$x]}":"Failed"
-                sed -i "s/<\/table>/<tr><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td>FAIL<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td>FAIL<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
             fi
         done
         popd
     else
         echo "Sanity file does not exist"
-        sed -i "s/<\/table>/<tr><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+        sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
     fi
 }
 
@@ -46,7 +46,7 @@ function recipesUnChanged()
     echo "unchanged recipes ${unchangedrecipes[@]}"
     for (( p=0; p<${#unchangedrecipes[@]}; p++ ))
     do    
-    sed -i "s/<\/table>/<tr><td>${unchangedrecipes[$p]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+    sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${unchangedrecipes[$p]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
     done
 }
 
@@ -66,6 +66,7 @@ HTML="<!DOCTYPE html>
 <html>
 <table border=\"1\">
   <tr>
+    <th>Provider</th>
     <th>Recipe</th>
     <th>Testcase</th>
     <th>Status</th>
