@@ -34,7 +34,7 @@ function sanity-test()
 
 function recipesUnChanged()
 {
-    
+    unset unchangedrecipes;
     unchangedrecipes=()
     for z in "${Gateway[@]}"; do
         skip=
