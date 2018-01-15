@@ -10,6 +10,7 @@ function sanity-test()
         sleep 1
         echo ${#value[@]}
         echo test=${value[0]}
+        
         for ((i=0;i < ${#value[@]};i++))
         do
             #source ./${recipeCreate[$x]}.sh
@@ -19,11 +20,15 @@ function sanity-test()
             if [[ $value1 == *"PASS"* ]];  then
                 echo "${recipeCreate[$x]}":"Passed"
                 echo ${value[i]}
+                q=$((q+1))
                 sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="success">PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
             else
                 echo "${recipeCreate[$x]}":"Failed"
+                r=$((r+1))
                 sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="error">FAIL<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
             fi
+            p=$((p+1));
+            echo $p;
         done
         popd
     else
@@ -46,7 +51,7 @@ cd $GOPATH
 FILENAME="SanityReport.html"
 HTML="<!DOCTYPE html><html><head><style>table{font-family: arial, sans-serif;border-collapse: collapse;margin:auto;}td,th{border: 1px solid #dddddd;text-align: left;padding: 8px;}th{background: #003399;text-align:center; color:#fff;}body{padding-right: 15px;
       padding-left: 15px;margin-right: auto;margin-left: auto;}label{font-weight:bold;}.test-report h2{color : #003399;}.summary,.test-report{text-align:center;}.success{background-color:#79d279;}.error{background-color:#ff3300;}</style></head><body>
-<!--<section class="summary"><h2>Summary</h2><p>Number of test cases passed : <label>number</label></p><p>Number of test cases failed : <label>number</label></p></section> --><section class="test-report"><h2>Test Report</h2><table><tr><th>Provider</th><th>Recipe</th><th>Testcase</th><th>Status</th></tr>
+<section class="summary"><h2>Summary</h2><p>Number of test cases passed :"$q" <label>number</label></p><p>Number of test cases failed : "$r" <label>number</label></p></section><section class="test-report"><h2>Test Report</h2><table><tr><th>Provider</th><th>Recipe</th><th>Testcase</th><th>Status</th></tr>
 </table>
 </html>"
 echo $HTML >> $FILENAME
@@ -61,6 +66,10 @@ fi
 
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
 echo "Found $array_length recipe providers." ;
+count=();
+    p=0;
+    q=0;
+    r=0;
 for (( j = 0; j < $array_length; j++ ))
     do            
         eval xpath_url='.recipe_repos[$j].url' ;
