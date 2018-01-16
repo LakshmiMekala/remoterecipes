@@ -16,7 +16,7 @@ before_install:
 install:  
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
   - cd $GOPATH
-  - wget http://redrockdigimark.com/apachemirror/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O $GOPATH/kafka.tgz
+  - wget http://www-eu.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O $GOPATH/kafka.tgz
   - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
   - tar -xvzf $GOPATH/kafka.tgz --strip 1
   - cd $GOPATH/src/github.com/TIBCOSoftware

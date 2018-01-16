@@ -33,9 +33,10 @@ function sanity-test()
             echo $p;
         done
         popd
+        p=$((p+1))
     else
         echo "Sanity file does not exist"
-        sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td  class="success">PASS<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
+        sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
     fi
 }
 
@@ -53,7 +54,7 @@ cd $GOPATH
 FILENAME="SanityReport.html"
 HTML="<!DOCTYPE html><html><head><style>table{font-family: arial, sans-serif;border-collapse: collapse;margin:auto;}td,th{border: 1px solid #dddddd;text-align: left;padding: 8px;}th{background: #003399;text-align:center; color:#fff;}body{padding-right: 15px;
       padding-left: 15px;margin-right: auto;margin-left: auto;}label{font-weight:bold;}.test-report h2{color : #003399;}.summary,.test-report{text-align:center;}.success{background-color:#79d279;}.error{background-color:#ff3300;}</style></head><body>
-<section class="summary"><h2>Summary</h2><p>Number of test cases passed : <label></label></p><p>Number of test cases failed : <label></label></p></section><section class="test-report"><h2>Test Report</h2><table><tr><th>Provider</th><th>Recipe</th><th>Testcase</th><th>Status</th></tr>
+<section class="summary"><h2>Summary</h2><p>Number of test cases passed : <label></label></p><p>Number of test cases failed : <label><p>Total test cases : <label></label></p></section><section class="test-report"><h2>Test Report</h2><table><tr><th>Provider</th><th>Recipe</th><th>Testcase</th><th>Status</th></tr>
 </table>
 </html>"
 echo $HTML >> $FILENAME
@@ -109,6 +110,7 @@ for (( j = 0; j < $array_length; j++ ))
 
 sed -i s/"passed : <label>"/"passed : <label>$q"/g $GOPATH/$FILENAME
 sed -i s/"failed : <label>"/"failed : <label>$r"/g $GOPATH/$FILENAME
+sed -i s/"Total test cases : <label>"/"Total test cases : <label>$p"/g $GOPATH/$FILENAME
 
-cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
+#cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
 cp $GOPATH/$FILENAME $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder     
