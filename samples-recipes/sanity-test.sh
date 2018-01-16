@@ -23,11 +23,11 @@ function sanity-test()
                 echo "${recipeCreate[$x]}":"Passed"
                 echo ${value[i]}
                 q=$((q+1))
-                sed -i "s/<th>Status</th><\/tr><\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="success">PASS<\/td><\/tr><th>Status</th><\/tr><\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<th>Status<\/th><\/tr><\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="success">PASS<\/td><\/tr><th>Status<\/th><\/tr><\/table>/" $GOPATH/$FILENAME
             else
                 echo "${recipeCreate[$x]}":"Failed"
                 r=$((r+1))
-                sed -i "s/<th>Status</th><\/tr><\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="error">FAIL<\/td><\/tr><th>Status</th><\/tr><\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<th>Status<\/th><\/tr><\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="error">FAIL<\/td><\/tr><th>Status<\/th><\/tr><\/table>/" $GOPATH/$FILENAME
             fi
             p=$((p+1));
             echo $p;
@@ -36,7 +36,7 @@ function sanity-test()
     #    p=$((p+1))
     else
         echo "Sanity file does not exist"
-        sed -i "s/<th>Status</th><\/tr><\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><th>Status</th><\/tr><\/table>/" $GOPATH/$FILENAME
+        sed -i "s/<th>Status<\/th><\/tr><\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><th>Status<\/th><\/tr><\/table>/" $GOPATH/$FILENAME
     fi
 }
 
