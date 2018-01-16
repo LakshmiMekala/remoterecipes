@@ -14,9 +14,9 @@ function sanity-test()
         
         for ((i=0;i < ${#value[@]};i++))
         do
-            #source ./${recipeCreate[$x]}.sh
-            #value1=$(${value[i]})
+            source ./${recipeCreate[$x]}.sh
             ${value[i]}
+            value1=$(${value[i]})            
             echo value1=$value1
             sleep 10
             if [[ $value1 == *"PASS"* ]];  then
