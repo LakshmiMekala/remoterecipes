@@ -33,7 +33,7 @@ function sanity-test()
             echo $p;
         done
         popd
-        p=$((p+1))
+    #    p=$((p+1))
     else
         echo "Sanity file does not exist"
         sed -i "s/<\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/table>/" $GOPATH/$FILENAME
