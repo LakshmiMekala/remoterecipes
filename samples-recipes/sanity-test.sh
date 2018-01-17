@@ -23,11 +23,11 @@ function sanity-test()
                 echo "${recipeCreate[$x]}":"Passed"
                 echo ${value[i]}
                 q=$((q+1))
-                sed -i "s/<\/tr> <\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="success">PASS<\/td><\/tr><\/tr> <\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<\/tr> <\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="success">PASS<\/td><\/tr><\/tr> <\/table>/g" $GOPATH/$FILENAME
             else
                 echo "${recipeCreate[$x]}":"Failed"
                 r=$((r+1))
-                sed -i "s/<\/tr> <\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="error">FAIL<\/td><\/tr><\/tr> <\/table>/" $GOPATH/$FILENAME
+                sed -i "s/<\/tr> <\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>${value[i]}<\/td><td  class="error">FAIL<\/td><\/tr><\/tr> <\/table>/g" $GOPATH/$FILENAME
             fi
             p=$((p+1));
             echo $p;
@@ -36,7 +36,7 @@ function sanity-test()
     #    p=$((p+1))
     else
         echo "Sanity file does not exist"
-        sed -i "s/<\/tr> <\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/tr> <\/table>/" $GOPATH/$FILENAME
+        sed -i "s/<\/tr> <\/table>/<tr><td>${provider[$j]}<\/td><td>${recipeCreate[$x]}<\/td><td>NA<\/td><td>NA<\/td><\/tr><\/tr> <\/table>/g" $GOPATH/$FILENAME
     fi
 }
 
@@ -52,11 +52,9 @@ function recipesToBeTested()
 
 cd $GOPATH
 FILENAME="SanityReport.html"
-HTML="<!DOCTYPE html><html><head><style>table{font-family: arial, sans-serif;border-collapse: collapse;margin:auto;}td,th{border: 1px solid #dddddd;text-align: left;padding: 8px;}th{background: #003399;text-align:center; color:#fff;}body{padding-right: 15px;
-      padding-left: 15px;margin-right: auto;margin-left: auto;}label{font-weight:bold;}.test-report h2{color : #003399;}.summary,.test-report{text-align:center;}.success{background-color:#79d279;}.error{background-color:#ff3300;}</style></head><body>
-<section class="summary"><h2>Summary</h2><table><tr><td>Number of test cases passed </td> <td></td></tr><tr><td>Number of test cases failed </td> <td></td></tr><td>Total test cases</td><td></td></tr></table></section><section class=test-report><h2>Recipes Sanity report</h2><table><tr><th>Provider</th><th>Recipe</th><th>Testcase</th><th>Status</th></tr>
-</table>
-</html>"
+HTML="<!DOCTYPE html>
+<html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;margin: auto;}td,th {border: 1px solid #dddddd;text-align: left;padding: 8px;}th {background: #003399;text-align: center;color: #fff;}body {padding-right: 15px;padding-left: 15px;margin-right: auto;margin-left: auto;}label {font-weight: bold;}.test-report h1 {color: #003399;}.summary,.test-report {text-align: center;}.success {background-color: #79d279;}.error {background-color: #ff3300;}.summary-tbl {font-weight: bold;}.summary-tbl td {border: none;}</style></head><body>    <section class=test-report><h1>Recipes Sanity report</h1></section><section class=summary><h2>Summary</h2><table class="summary-tbl"><tr><td>Number of test cases passed </td> <td> </td></tr><tr><td>Number of test cases failed </td> <td> </td></tr><td>Total test cases</td><td></td></tr></tr></table></section><section class=test-report><h2>Detailed report</h2><table><tr><th>Provider</th><th>Recipe</th><th> Testcase </th><th>Status</th><tr></tr> </table></html>"
+
 echo $HTML >> $FILENAME
 
 name="${TRAVIS_REPO_SLUG}" ;
