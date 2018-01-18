@@ -38,6 +38,7 @@ function sanity-test()
 
 function recipesToBeTested()
 {
+    unset recipeCreate;
     IFS=\  read -a recipeCreate <<<"$recipeCreated" ;
     set | grep ^IFS= ;
     # separating arrays ny line
@@ -75,7 +76,7 @@ for (( j = 0; j < $array_length; j++ ))
         echo provider is "${provider[$j]}";        
         recipeCreated=$(cat $GOPATH/recipes-[$j]);
         echo j value is : $j
-        if [[ $j != 1 ]];then
+        if [[ $j == 0 ]]; then
         recipesToBeTested;
         fi
         echo gateway array is "${recipeCreate[@]}";
