@@ -383,13 +383,18 @@ do
     provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ; 
 	echo provider is "${provider[$j]}";
 	eval provider="${provider[$j]}";
+    echo remotereponame value : "${remotereponame[$j]}";
     if [ -n "${remotereponame[$j]}" ]; then
 	jq -s '.' $provider-*.json > recipe-[$j].json
     else
-    rm -rf recipe-[$j].json
+    rm -f recipe-[$j].json
     fi
 done
+echo "123";
+ls;
+echo "456";
 jq -s '.' recipe-*.json > recipeinfo.json
+cat recipeinfo.json
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
