@@ -271,7 +271,7 @@ function package_gateway()
                         mv $fnamelc $destfnamelc ;
                     fi
 		            if [[ $GOOS == linux ]];then
-                        cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$y]}";
+                        cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$y]}";
                	    fi
                     zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
                     cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
