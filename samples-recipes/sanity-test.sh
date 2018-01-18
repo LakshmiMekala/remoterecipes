@@ -75,7 +75,7 @@ for (( j = 0; j < $array_length; j++ ))
         echo provider is "${provider[$j]}";        
         recipeCreated=$(cat $GOPATH/recipes-[$j]);
         echo j value is : $j
-        if [[ $j == 0 ]];then
+        if [[ $j != 1 ]];then
         recipesToBeTested;
         fi
         echo gateway array is "${recipeCreate[@]}";
