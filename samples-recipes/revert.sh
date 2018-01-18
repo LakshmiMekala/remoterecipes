@@ -161,9 +161,9 @@ function recipe_registry()
                         RecipesToBeDeleted ;
                     fi
                 fi
-                recipeCreate=()
-                y=0;
                 unset recipeCreate
+                recipeCreate=()
+                y=0;                
                 for (( x=0; x<$publish_length; x++ ))
                 do
                     eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
