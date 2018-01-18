@@ -38,7 +38,6 @@ function sanity-test()
 
 function recipesToBeTested()
 {
-    unset recipeCreate;
     IFS=\  read -a recipeCreate <<<"$recipeCreated" ;
     set | grep ^IFS= ;
     # separating arrays ny line
@@ -77,13 +76,13 @@ for (( j = 0; j < $array_length; j++ ))
         recipeCreated=$(cat $GOPATH/recipes-[$j]);
         echo j value is : $j
         if [[ $j == 0 ]]; then
-        recipesToBeTested;
-        fi
+        recipesToBeTested;        
         echo gateway array is "${recipeCreate[@]}";
         for (( x=0; x<"${#recipeCreate[@]}"; x++ ))
         do
             sanity-test;
-        done   
+        done
+        fi   
     done
 
 sed -i s/"passed <\/td> <td>"/"passed <\/td> <td>$q"/g $GOPATH/$FILENAME
