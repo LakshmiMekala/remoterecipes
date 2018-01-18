@@ -34,7 +34,7 @@ install:
 script:  
   - chmod ugo+x ./revert.sh ./sanity-test.sh
   - ./revert.sh OPTIMIZE=$BUILDFLAGVALUE;
- - ./sanity-test.sh
+  - ./sanity-test.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
