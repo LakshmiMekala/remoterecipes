@@ -143,7 +143,7 @@ function recipe_registry()
     echo "Found $array_length recipe providers." ;
         for (( j = 0; j < $array_length; j++ ))
             do
-                unset Gateway
+                #unset Gateway
                 echo "value of j=$j" ;
                 #eval provider and publish
                 eval xpath_publish='.recipe_repos[$j].publish' ;
