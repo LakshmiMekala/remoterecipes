@@ -169,7 +169,7 @@ function recipe_registry()
                     Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
                     #recipeCreate[$y]=${Gateway[$x]} ;
                     recipeInfo ;
-                    if [[ $OPTIMIZE = TRUE ]] ; then
+                    if [[ $OPTIMIZE == TRUE ]] ; then
                         if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
                             echo "${Gateway[$x]} found in current commit" ;
                             recipeCreate[$y]=${Gateway[$x]} ;
