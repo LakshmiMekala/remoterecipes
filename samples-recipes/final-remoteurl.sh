@@ -102,7 +102,7 @@ function RecipesNewlyAdded()
             unset recipeAdded;
             unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
-            RecipesToBeCreated ;
+            #RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build

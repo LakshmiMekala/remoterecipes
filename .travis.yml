@@ -2,23 +2,23 @@ language : go
 before_install:
   - "echo -e \"machine github.com\n  login ${GITHUB_USER_TOKEN}\" >> ~/.netrc"
   - go get github.com/constabulary/gb/...
-  - go get -u github.com/ains/go-test-html
-  - sudo apt-get install zookeeperd
+  # - go get -u github.com/ains/go-test-html
+  # - sudo apt-get install zookeeperd
   - go get -u github.com/tools/godep/...
-  - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa --yes
+  # - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa --yes
   - sudo apt-add-repository ppa:duggan/jo --yes
   - sudo apt-get update -q
-  - sudo apt-get install mosquitto
-  - sudo apt-get install libmosquitto-dev
-  - sudo apt-get install mosquitto-clients
+  # - sudo apt-get install mosquitto
+  # - sudo apt-get install libmosquitto-dev
+  # - sudo apt-get install mosquitto-clients
   - sudo apt-get install jo
   - pip install --user awscli
 install:  
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
-  - cd $GOPATH
-  - wget http://www-eu.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O $GOPATH/kafka.tgz
-  - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
-  - tar -xvzf $GOPATH/kafka.tgz --strip 1
+  # - cd $GOPATH
+  # - wget http://www-eu.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O $GOPATH/kafka.tgz
+  # - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
+  # - tar -xvzf $GOPATH/kafka.tgz --strip 1
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone https://github.com/TIBCOSoftware/mashling.git
   - git clone https://github.com/LakshmiMekala/sampleabc.git mashling-recipes
@@ -28,13 +28,13 @@ install:
   - godep restore
   - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
-  - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git recip1
+  - git clone -b recipeinfo-fix https://github.com/LakshmiMekala/remoterecipes.git recip1
   - pushd recip1/samples-recipes
   - mkdir -p master-builds/latest/temp builds/latest
 script:  
   - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh
   - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
-  - ./sanity-test.sh
+#  - ./sanity-test.sh
   - popd
   - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
