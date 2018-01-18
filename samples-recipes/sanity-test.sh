@@ -75,7 +75,9 @@ for (( j = 0; j < $array_length; j++ ))
         provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ;
         echo provider is "${provider[$j]}";        
         recipeCreated=$(cat $GOPATH/recipes-[$j]);
+        if [[ $j == 0 ]];then
         recipesToBeTested;
+        fi
         echo gateway array is "${recipeCreate[@]}";
         for (( x=0; x<"${#recipeCreate[@]}"; x++ ))
         do
