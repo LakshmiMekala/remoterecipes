@@ -3,7 +3,6 @@
 function sanity-test()
 {
     if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then  
-        ls;      
         pushd "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}";
         source ./${recipeCreate[$x]}.sh
         value=($(get_test_cases))
@@ -75,6 +74,7 @@ for (( j = 0; j < $array_length; j++ ))
         provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ;
         echo provider is "${provider[$j]}";        
         recipeCreated=$(cat $GOPATH/recipes-[$j]);
+        echo j value is : $j
         if [[ $j == 0 ]];then
         recipesToBeTested;
         fi
