@@ -93,7 +93,7 @@ function RecipesNewlyAdded()
 ##Function to copy recipes from S3 to Local for optimized build
 function S3copytoLocal()
 {
-    aws s3 cp s3://$AWS_BUCKET/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive
+    aws s3 cp s3://mashling-recipes/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive
     pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
     rm -rf recipeinfo.json recipe_registry.json
     recipesInLatest=(*)
@@ -143,6 +143,7 @@ function recipe_registry()
     echo "Found $array_length recipe providers." ;
         for (( j = 0; j < $array_length; j++ ))
             do
+                unset Gateway;
                 echo "value of j=$j" ;
                 #eval provider and publish
                 eval xpath_publish='.recipe_repos[$j].publish' ;
@@ -162,6 +163,7 @@ function recipe_registry()
                 fi
                 recipeCreate=()
                 y=0;
+                unset recipeCreate
                 for (( x=0; x<$publish_length; x++ ))
                 do
                     eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;

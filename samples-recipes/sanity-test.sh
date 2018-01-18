@@ -2,7 +2,8 @@
 
 function sanity-test()
 {
-    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then        
+    if [[ -f "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}/${recipeCreate[$x]}.sh" ]];then  
+        ls;      
         pushd "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/${recipeCreate[$x]}";
         source ./${recipeCreate[$x]}.sh
         value=($(get_test_cases))
