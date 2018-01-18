@@ -84,7 +84,7 @@ function RecipesNewlyAdded()
             do
                 echo "${recipeCreate[$x]}" ;
             done
-	    unset recipeAdded;
+	    #unset recipeAdded;
             #unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
             echo newly added recipe is "${recipeCreate[@]}" ;           
