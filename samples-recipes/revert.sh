@@ -93,7 +93,7 @@ function RecipesNewlyAdded()
 ##Function to copy recipes from S3 to Local for optimized build
 function S3copytoLocal()
 {
-    aws s3 cp s3://mashling-recipes/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive
+    aws s3 cp s3://$AWS_BUCKET/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive
     pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
     rm -rf recipeinfo.json recipe_registry.json
     recipesInLatest=(*)
