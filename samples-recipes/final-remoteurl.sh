@@ -102,7 +102,7 @@ function RecipesNewlyAdded()
             unset recipeAdded;
             unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
-            RecipesToBeCreated ;
+            #RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -384,8 +384,12 @@ do
 	echo provider is "${provider[$j]}";
 	eval provider="${provider[$j]}";
 	jq -s '.' $provider-*.json > recipe-[$j].json
+    jo -p ${provider[$j]}=$(cat recipe-[$j].json)  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"temp-[$j]".json
 done
-jq -s '.' recipe-*.json > recipeinfo.json
+jq -s '.' temp-*.json > recipeinfo.json
+echo ==========================================
+cat recipeinfo.json
+echo ==========================================
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
