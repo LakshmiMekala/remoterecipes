@@ -384,7 +384,7 @@ do
 	echo provider is "${provider[$j]}";
 	eval provider="${provider[$j]}";
 	jq -s '.' $provider-*.json > recipe-[$j].json
-    jo -p ${provider[$j]}=$(cat recipe-[$j].json)  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"temp-[$j]".json
+    jo -p ${provider[$j]}=$(cat recipe-[$j].json) >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"temp-[$j]".json
 done
 jq -s '.' temp-*.json > recipeinfo.json
 echo ==========================================
