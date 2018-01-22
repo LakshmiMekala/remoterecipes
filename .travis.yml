@@ -20,13 +20,13 @@ install:
   # - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
   # - tar -xvzf $GOPATH/kafka.tgz --strip 1
   - cd $GOPATH/src/github.com/TIBCOSoftware
-  - git clone https://github.com/TIBCOSoftware/mashling.git
+#  - git clone https://github.com/TIBCOSoftware/mashling.git
   - git clone https://github.com/LakshmiMekala/sampleabc.git mashling-recipes
-  - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
-  - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
-  - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
-  - godep restore
-  - make all
+#  - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
+  # - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
+  # - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
+#  - godep restore
+#  - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git recip1
   - pushd recip1/samples-recipes
@@ -36,7 +36,7 @@ script:
   - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
 #  - ./sanity-test.sh
   - popd
-  - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
+  # - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
   - "[ -f \"${HOME}/.aws\" ] && rm -f ${HOME}/.aws"

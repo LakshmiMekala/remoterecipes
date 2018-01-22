@@ -201,6 +201,7 @@ function recipe_registry()
 				Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
 				Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
 				recipeInfo ;
+                z=$z+1
 				if [[ $OPTIMIZE = TRUE ]] ; then
 					if [[ "${remotereponame[$j]}" == recipes ]] ; then
 						if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
@@ -346,16 +347,18 @@ function recipeInfo()
         sourceURL=$provider_url/tree/master/"${Gateway[$x]}" ;
         echo "$sourceURL";
     fi
+    PROVIDERURL="${provider[$j]}"
     JSONURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
     IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
     MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
     LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
     WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
 	
-    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json ;
-    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"${provider[$j]}-[$x]".json ;    
+    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] provider=$PROVIDERURL >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json ;
+    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"recipe-[$z]".json ;    
 }
 
+z=0
 export GOOS=linux ;
 echo $GOOS ;
 export GOARCH=amd64 ;
@@ -375,19 +378,19 @@ cp $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json $G
 cp -r $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/* $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest;
 pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
 echo "alert json 5" ;
-for (( j = 0; j < $array_length; j++ ))
-do
-	eval xpath_provider='.recipe_repos[$j].provider' ;
-	provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
-	provider[$j]=$(echo $provider | tr -d '"') ;
-    provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ; 
-	echo provider is "${provider[$j]}";
-	eval provider="${provider[$j]}";
-	jq -s '.' $provider-*.json > recipe-[$j].json
-    jo -p ${provider[$j]}="$(jq '.' recipe-[$j].json)" >> recipe-info-[$j].json
+# for (( j = 0; j < $array_length; j++ ))
+# do
+# 	eval xpath_provider='.recipe_repos[$j].provider' ;
+# 	provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
+# 	provider[$j]=$(echo $provider | tr -d '"') ;
+#     provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ; 
+# 	echo provider is "${provider[$j]}";
+# 	eval provider="${provider[$j]}";
+# 	jq -s '.' $provider-*.json > recipe-[$j].json
+#     jo -p "${provider[$j]}"="$(jq '.' recipe-[$j].json)" >> recipe-info-[$j].json
     
-done
-jq -s '.' recipe-info-*.json > recipeinfo.json
+# done
+jq -s '.' recipe-*.json > recipeinfo.json
 echo ==========================================
 cat recipeinfo.json
 echo ==========================================
