@@ -15,18 +15,18 @@ before_install:
   - pip install --user awscli
 install:  
   - mkdir -p $GOPATH/src/github.com/TIBCOSoftware
-  # - cd $GOPATH
-  # - wget http://www-eu.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O $GOPATH/kafka.tgz
-  # - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
-  # - tar -xvzf $GOPATH/kafka.tgz --strip 1
+  - cd $GOPATH
+  - wget http://www-eu.apache.org/dist/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O $GOPATH/kafka.tgz
+  - mkdir -p $GOPATH/kafka && cd $GOPATH/kafka
+  - tar -xvzf $GOPATH/kafka.tgz --strip 1
   - cd $GOPATH/src/github.com/TIBCOSoftware
-#  - git clone https://github.com/TIBCOSoftware/mashling.git
+  - git clone https://github.com/TIBCOSoftware/mashling.git
   - git clone https://github.com/LakshmiMekala/sampleabc.git mashling-recipes
-#  - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
-  # - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
-  # - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
-#  - godep restore
-#  - make all
+  - git clone https://github.com/TIBCOSoftware/mashling-cicd.git
+  - cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/dependency-config/* $GOPATH/src/github.com/TIBCOSoftware/mashling
+  - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
+ - godep restore
+ - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
   - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git recip1
   - pushd recip1/samples-recipes
@@ -34,9 +34,8 @@ install:
 script:  
   - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh
   - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
-#  - ./sanity-test.sh
+ - ./sanity-test.sh
   - popd
-  # - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
   - "[ -f \"${HOME}/.aws\" ] && rm -f ${HOME}/.aws"

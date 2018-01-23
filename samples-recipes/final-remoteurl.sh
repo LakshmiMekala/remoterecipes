@@ -102,7 +102,7 @@ function RecipesNewlyAdded()
             unset recipeAdded;
             unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
-            #RecipesToBeCreated ;
+            RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -178,7 +178,10 @@ function recipe_registry()
 					git clone $path_url "${remotereponame[$j]}" ;
 					popd ;
 				else
-					remotereponame[$j]="$provider_url";
+					if [ -z "$provider_url" ]; then
+                        remotereponame[$j]=recipes
+                        echo "==========${remotereponame[$j]}============"
+                    fi
 				fi
 				if [[ $OPTIMIZE = TRUE ]] ; then
 					for (( x=0; x<$publish_length; x++ ))
@@ -378,18 +381,6 @@ cp $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json $G
 cp -r $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/* $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest;
 pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
 echo "alert json 5" ;
-# for (( j = 0; j < $array_length; j++ ))
-# do
-# 	eval xpath_provider='.recipe_repos[$j].provider' ;
-# 	provider=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_provider) ;
-# 	provider[$j]=$(echo $provider | tr -d '"') ;
-#     provider[$j]=$(echo "${provider[$j]}" | sed -e 's/ /-/g') ; 
-# 	echo provider is "${provider[$j]}";
-# 	eval provider="${provider[$j]}";
-# 	jq -s '.' $provider-*.json > recipe-[$j].json
-#     jo -p "${provider[$j]}"="$(jq '.' recipe-[$j].json)" >> recipe-info-[$j].json
-    
-# done
 jq -s '.' recipe-*.json > recipeinfo.json
 echo ==========================================
 cat recipeinfo.json
