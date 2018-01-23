@@ -178,7 +178,7 @@ function recipe_registry()
 					git clone $path_url "${remotereponame[$j]}" ;
 					popd ;
 				else
-					if [ -z "$provider_url" ]; then
+					if [ -n "$provider_url" ]; then
                         remotereponame[$j]=recipes
                         echo "==========${remotereponame[$j]}============"
                     fi
