@@ -87,8 +87,10 @@ for (( j = 0; j < $array_length; j++ ))
             remotereponame[$j]=$(echo ${remotereponame[$j]} | cut -f1 -d '.');
             echo "${remotereponame[$j]}";
         else
-            remotereponame[$j]="$provider_url";
-            echo "${remotereponame[$j]}";
+            if [ -n "$provider_url" ]; then
+                remotereponame[$j]=recipes
+                echo "==========${remotereponame[$j]}============"
+            fi
         fi
         recipeCreated=$(cat $GOPATH/recipes-[$j]);
         recipesToBeTested;
