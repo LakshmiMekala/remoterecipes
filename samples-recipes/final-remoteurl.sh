@@ -102,7 +102,7 @@ function RecipesNewlyAdded()
             unset recipeAdded;
             unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
-            RecipesToBeCreated ;
+            #RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -249,6 +249,7 @@ function RecipesToBeCreated()
 		if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
 			displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
 			displayImage=$(echo $displayImage | tr -d '"') ;
+            echo "=====================$displayImage========================="
 			echo "creating ${recipeCreate[$y]} gateway" ;
 			cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"
 			mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
@@ -350,12 +351,13 @@ function recipeInfo()
         sourceURL=$provider_url/tree/master/"${Gateway[$x]}" ;
         echo "$sourceURL";
     fi
+    echo "=====================$displayImage========================="
     PROVIDERURL="${provider[$j]}"
-    JSONURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
-    IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
-    MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
-    LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
-    WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
+    JSONURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
+    IMAGEURL=/"${provider[$j]}"/${Gateway[$x]}/$displayImage ;
+    MACURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
+    LINUXURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
+    WINDOWSURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
 	
     jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] provider=$PROVIDERURL >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json ;
     jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"recipe-[$z]".json ;    
@@ -382,9 +384,6 @@ cp -r $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/
 pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
 echo "alert json 5" ;
 jq -s '.' recipe-*.json > recipeinfo.json
-echo ==========================================
-cat recipeinfo.json
-echo ==========================================
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
