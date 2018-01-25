@@ -102,7 +102,7 @@ function RecipesNewlyAdded()
             unset recipeAdded;
             unset recipeTOCreate;
             echo "${recipeCreate[@]}" > $GOPATH/recipes-[$j]; 
-            #RecipesToBeCreated ;
+            RecipesToBeCreated ;
 }
 
 ##Function to copy recipes from S3 to Local for optimized build
@@ -206,7 +206,6 @@ function recipe_registry()
                 unset displayImage
                 displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${Gateway[$x]}"/"${Gateway[$x]}".json | jq '.gateway.display_image') ;
                 displayImage=$(echo $displayImage | tr -d '"');
-                echo "=====================$displayImage========================="
 				recipeInfo ;
                 z=$z+1
 				if [[ $OPTIMIZE = TRUE ]] ; then
