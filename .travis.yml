@@ -35,9 +35,8 @@ install:
   - mkdir -p master-builds/latest/temp builds/latest
 script:  
   - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh ./as2.sh
-  - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
+  - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE; || travis_terminate 1
   - ./sanity-test.sh
-after_success:
   - ./as2.sh
   - popd
 after_script:
