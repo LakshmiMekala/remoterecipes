@@ -37,9 +37,9 @@ script:
   - chmod ugo+x ./final-remoteurl.sh ./sanity-test.sh ./as2.sh
   - ./final-remoteurl.sh OPTIMIZE=$BUILDFLAGVALUE;
   - ./sanity-test.sh
+after_success:
   - ./as2.sh
   - popd
-  - cd $GOPATH/src/github.com/TIBCOSoftware/mashling
 after_script:
   - "[ -f \"${HOME}/.netrc\" ] && rm -f ${HOME}/.netrc"
   - "[ -f \"${HOME}/.aws\" ] && rm -f ${HOME}/.aws"
