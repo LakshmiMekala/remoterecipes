@@ -1,4 +1,5 @@
-fail_fast: true
+matrix:
+  fast_finish: true
 language : go 
 before_install:
   - "echo -e \"machine github.com\n  login ${GITHUB_USER_TOKEN}\" >> ~/.netrc"
