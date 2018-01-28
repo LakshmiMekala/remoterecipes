@@ -392,5 +392,5 @@ popd ;
 
     if [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then    
         echo "cleaning S3 folder"
-        aws s3 rm s3://test-bucket4569/master-builds/latest --recursive
+        aws s3 rm s3://${AWS_BUCKET}/master-builds/latest --recursive
     fi
