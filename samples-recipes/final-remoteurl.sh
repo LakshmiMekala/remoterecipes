@@ -390,7 +390,7 @@ rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds
 popd ;
 
 
-    if [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then    
-        echo "cleaning S3 folder"
-        aws s3 rm s3://${AWS_BUCKET}/master-builds/latest --recursive
-    fi
+    # if [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then    
+    #     echo "cleaning S3 folder"
+    #     aws s3 rm s3://${AWS_BUCKET}/master-builds/latest --recursive
+    # fi
