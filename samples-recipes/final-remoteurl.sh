@@ -265,6 +265,7 @@ function binarycheck()
         fname="${recipeCreate[$y]}-$GOOS-$GOARCH" ;
         fnamelc="${fname,,}" ;
         echo $fnamelc ;
+        rm -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc;
         if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             echo "binary file found" ;
             package_gateway;
