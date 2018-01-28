@@ -388,3 +388,9 @@ cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/m
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
 popd ;
+
+
+    if [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then    
+        echo "cleaning S3 folder"
+        aws s3 rm s3://test-bucket4569/master-builds/latest --recursive
+    fi
