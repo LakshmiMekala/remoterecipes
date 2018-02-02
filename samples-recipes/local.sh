@@ -285,7 +285,7 @@ function RecipesToBeCreated()
     mkdir "${provider[$j]}";
 	echo "${provider[$j]}" ; 
 	cd "${provider[$j]}" ;
-	for (( y=8; y < "${#recipeCreate[@]}"; y++ ));    
+	for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
 	do
 		echo "${recipeCreate[$y]}";
         echo "==================="
@@ -310,6 +310,7 @@ function binarycheck()
         fname="${recipeCreate[$y]}-$GOOS-$GOARCH" ;
         fnamelc="${fname,,}" ;
         echo $fnamelc ;
+        rm -f $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc
         if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             echo "binary file found" ;
             package_gateway;
