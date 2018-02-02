@@ -30,7 +30,7 @@ install:
   - godep restore
   - make all
   - cd $GOPATH/src/github.com/TIBCOSoftware
-  - git clone -b sanity-tests https://github.com/LakshmiMekala/remoterecipes.git recip1
+  - git clone -b local-test https://github.com/LakshmiMekala/remoterecipes.git recip1
   - pushd recip1/samples-recipes
   - mkdir -p master-builds/latest/temp builds/latest
 script:  
