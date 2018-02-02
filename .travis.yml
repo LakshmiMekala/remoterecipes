@@ -34,7 +34,7 @@ install:
   - pushd recip1/samples-recipes
   - mkdir -p master-builds/latest/temp builds/latest
 script:  
-  - chmod ugo+x ./local.sh ./local-sanity.sh ./as2.sh ./source.sh
+  - chmod ugo+x ./as2.sh ./source.sh
 #  - ./local.sh OPTIMIZE=$BUILDFLAGVALUE || travis_terminate 1
 #  - ./local-sanity.sh
   - ./source.sh || travis_terminate 1
