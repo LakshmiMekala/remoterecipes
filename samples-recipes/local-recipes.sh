@@ -282,8 +282,7 @@ function RecipesToBeCreated()
 	mkdir -p "${provider[$j]}";
 	echo "${provider[$j]}" ; 
 	cd "${provider[$j]}" ;
-	#for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
-    for (( y=0; y < 1; y++ ));    
+	for (( y=0; y < "${#recipeCreate[@]}"; y++ ));
 	do
 		echo "${recipeCreate[$y]}";
 		if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
