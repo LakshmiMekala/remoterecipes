@@ -67,7 +67,7 @@ common::envvars() {
   local BUILD_CICD=$(common::detect)
   case "${BUILD_CICD}" in
       LOCAL)
-        cd $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes        
+        cd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes        
         cd master-builds;               
         destFolder="recipes";
         if [ ! -d "$destFolder" ]; then

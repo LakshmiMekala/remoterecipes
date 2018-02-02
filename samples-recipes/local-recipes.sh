@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 common::detect() {
     local BUILD_CICD="LOCAL" # default CICD
     if [[ ( -n "${TRAVIS}" ) && ( "${TRAVIS}" == "true" ) ]]; then
@@ -20,7 +19,7 @@ common::envvars() {
         # pushd $GOPATH/src/github.com/TIBCOSoftware/mashling
         # make all
         # popd
-        cd $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes
+        cd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes
         if [  -d "master-builds" ]; then
         rm -rf master-builds
         fi
@@ -41,7 +40,6 @@ common::envvars() {
     esac        
 }
 
-
 ###Fetching argument values passed along with build file
 
 for ARGUMENT in "$@"
@@ -59,7 +57,6 @@ done
 echo "OPTIMIZE = $OPTIMIZE"
 
 ####Adding AWS credentials to download latest recipes folder from S3
-
 
 mkdir ${HOME}/.aws
 cat > ${HOME}/.aws/credentials <<EOL
@@ -80,7 +77,7 @@ EOL
 ###Fetching recipes from latest folder
 function recipesFromLatest()
 {
-    pushd $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/$destFolder
+    pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/$destFolder
     rm -rf recipeinfo.json recipe_registry.json
     recipesInLatest=("${provider[$j]}"/*)
     for ((i=0; i<${#recipesInLatest[@]}; i++));
@@ -109,8 +106,8 @@ function RecipesToBeDeleted()
                 #declare -p recipeDeleteLatest
                 for (( p=0; p<${#recipeDeleteLatest[@]}; p++ ))
                 do
-                if [[ -d $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeDeleteLatest[$p]}" ]]; then
-                    rm -rf $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeDeleteLatest[$p]}" ;
+                if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeDeleteLatest[$p]}" ]]; then
+                    rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeDeleteLatest[$p]}" ;
                     echo deleting "${recipeDeleteLatest[$p]}";
                 fi
                 done
@@ -148,7 +145,7 @@ function RecipesNewlyAdded()
 ##Function to copy recipes from S3 to Local for optimized build
 function S3copytoLocal()
 {
-    aws s3 cp s3://${AWS_BUCKET}/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder" --recursive    
+    aws s3 cp s3://${AWS_BUCKET}/master-builds/latest  $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder" --recursive    
 }
 
 
@@ -243,14 +240,16 @@ function recipe_registry()
 				eval xpath_recipe='.recipe_repos[$j].publish[$x].recipe' ;
 				Gateway[$x]=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq $xpath_recipe) ;
 				Gateway[$x]=$(echo ${Gateway[$x]} | tr -d '"') ;
+                displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${Gateway[$x]}"/"${Gateway[$x]}".json | jq '.gateway.display_image') ;
+                displayImage=$(echo $displayImage | tr -d '"');
 				recipeInfo ;
                 z=$z+1
 				if [[ $OPTIMIZE = TRUE ]] ; then
 					if [[ "${remotereponame[$j]}" == recipes ]] ; then
 						if [[ $recipeName =~ ${Gateway[$x]}/${Gateway[$x]}.json ]] || [[ $recipeName =~ ${Gateway[$x]}/manifest ]];then
 							recipeCreate[$y]=${Gateway[$x]} ;
-							if [[ -d $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${Gateway[$x]}" ]] ; then
-								rm -rf $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${Gateway[$x]}";
+							if [[ -d $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${Gateway[$x]}" ]] ; then
+								rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${Gateway[$x]}";
                                 echo "deleting recipeCreate[$y]-----------${Gateway[$x]}"    
                             fi
 						else
@@ -278,26 +277,20 @@ function recipe_registry()
 
 function RecipesToBeCreated()
 {
-    
     echo gateway array is "${recipeCreate[@]}";
     echo length of gateway array is "${#recipeCreate[@]}";
-	# mkdir -p "${provider[$j]}";
-    mkdir "${provider[$j]}";
+	mkdir -p "${provider[$j]}";
 	echo "${provider[$j]}" ; 
 	cd "${provider[$j]}" ;
-	for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
+	#for (( y=0; y < "${#recipeCreate[@]}"; y++ ));    
+    for (( y=0; y < 1; y++ ));    
 	do
 		echo "${recipeCreate[$y]}";
-        echo "==================="
-        pwd;
-        echo "==================="
 		if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
-			displayImage=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json | jq '.gateway.display_image') ;
-			displayImage=$(echo $displayImage | tr -d '"') ;
 			echo "creating ${recipeCreate[$y]} gateway" ;
-			cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"
+			cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"
 			mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
-			rm -rf $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/manifest;
+			rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/manifest;
 		fi
 		binarycheck ;
 	done
@@ -310,8 +303,8 @@ function binarycheck()
         fname="${recipeCreate[$y]}-$GOOS-$GOARCH" ;
         fnamelc="${fname,,}" ;
         echo $fnamelc ;
-        rm -f $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc
-        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
+        # rm -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc;
+        if [[ -f $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"/bin/$fnamelc ]] ;then
             echo "binary file found" ;
             package_gateway;
         else
@@ -342,8 +335,8 @@ function package_gateway()
                 mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
                 cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
                 echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
-                if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage" ]]; then
-                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"
+                if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"$displayImage" ]]; then
+                cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/$displayImage $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/"${recipeCreate[$y]}"
                 fi
                 echo "$displayImage";
                 cd "${recipeCreate[$y]}-${OS_NAME[$k]}";
@@ -396,15 +389,16 @@ function recipeInfo()
         sourceURL=$provider_url/tree/master/"${Gateway[$x]}" ;
         echo "$sourceURL";
     fi
+    echo "=====================$displayImage========================="
     PROVIDERURL="${provider[$j]}"
-    JSONURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
-    IMAGEURL="${provider[$j]}"/${Gateway[$x]}/$displayImage ;
-    MACURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
-    LINUXURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
-    WINDOWSURL="${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
+    JSONURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}.mashling.json ;
+    IMAGEURL=/"${provider[$j]}"/${Gateway[$x]}/$displayImage ;
+    MACURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-osx.zip ;
+    LINUXURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-linux.zip ;
+    WINDOWSURL=/"${provider[$j]}"/${Gateway[$x]}/${Gateway[$x]}-windows.zip ;
 	
-    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] provider=$PROVIDERURL >> $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json ;
-    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest/temp/"recipe-[$z]".json ;    
+    jo -p id=$idvalue featured=$featuredvalue repository_url=$sourceURL json_url=$JSONURL image_url=$IMAGEURL binaries=[$(jo  platform=mac url=$MACURL),$(jo  platform=linux url=$LINUXURL),$(jo  platform=windows url=$WINDOWSURL)] provider=$PROVIDERURL >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json ;
+    jq -s '.[0] * .[1]' $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${Gateway[$x]}"/"${Gateway[$x]}".json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/A"${provider[$j]}-[$x]".json >> $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp/"recipe-[$z]".json ;    
 }
 
 common::detect ;
@@ -413,26 +407,23 @@ export GOOS=linux ;
 echo $GOOS ;
 export GOARCH=amd64 ;
 echo $GOARCH ;
-cd $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes
+cd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes
 common::envvars ;
 array_length=$(cat $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json | jq '.recipe_repos | length') ;
-echo "==================="
-pwd;
-echo "===================" 
-# if [[ "$GOOS" == linux ]]; then
-# 	if [[ $OPTIMIZE == TRUE ]] ; then
-# 		S3copytoLocal;
-# 	fi
-# fi
+if [[ "$GOOS" == linux ]]; then
+	if [[ $OPTIMIZE == TRUE ]] ; then
+		S3copytoLocal;
+	fi
+fi
 recipe_registry ;
 
-cp $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder";
-cp $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest;    
-cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder"/* $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest;
-pushd $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest/temp ;
+cp $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
+cp $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipe_registry.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest;    
+cp -r $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/* $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest;
+pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
 echo "alert json 5" ;
 jq -s '.' recipe-*.json > recipeinfo.json
-cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest
-cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/"$destFolder";
-rm -rf $GOPATH/src/github.com/TIBCOSoftware/mashling-cicd/sample-recipes/master-builds/latest/temp ;
-popd ;
+cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
+cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
+rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
+popd ;    
