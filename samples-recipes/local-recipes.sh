@@ -368,7 +368,7 @@ function package_gateway()
                 zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
                 cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
                 cd .. ;
-                rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
+                # rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
             #done            
             #rm -r src vendor pkg mashling.json ;            
             cd ..;
