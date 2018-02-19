@@ -318,13 +318,14 @@ function package_gateway()
     # If directory exists proceed to next steps
     if [ -d "${recipeCreate[$y]}" ]; then
             cd "${recipeCreate[$y]}";
+            dep init;
             cat mashling.json >> "${recipeCreate[$y]}.mashling.json" ;
             GOOSystem=("linux" "darwin" "windows");
             OS_NAME=("linux" "osx" "windows");  
             echo "entered into ${recipeCreate[$y]} folder"
-            Len="${#GOOSystem[@]}"
-            for (( k=0; k < "${Len}"; k++ ));
-            do
+            Len="${#GOOSystem[@]}";
+            #for (( k=0; k < "${Len}"; k++ ));
+            #do
                 export GOOS="${GOOSystem[$k]}" ;
                 echo GOOS=$GOOS ;
                 export GOARCH=amd64 ;
@@ -357,12 +358,19 @@ function package_gateway()
                 if [[ $GOOS == linux ]];then
                     cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$y]}";
                 fi
+                if [[ $BUILD_CICD == local ]];then
+                    if [[ $GOOS == "darwin" ]] && [[ "$OSTYPE" == "darwin"* ]] ;then
+                        cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$y]}";
+                    elif [[ $GOOS == "windows" ]] && [[ "$OSTYPE" == "msys"* ]] ;then
+                        cp $destfnamelc "$GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/${recipeCreate[$y]}";
+                    fi    
+                fi
                 zip -r "${recipeCreate[$y]}-${OS_NAME[$k]}" *;
                 cp "${recipeCreate[$y]}-${OS_NAME[$k]}.zip" ../../"${recipeCreate[$y]}" ;
                 cd .. ;
                 rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
-            done            
-            rm -r src vendor pkg mashling.json ;            
+            #done            
+            #rm -r src vendor pkg mashling.json ;            
             cd ..;
             export GOOS=linux ;
     else
@@ -425,4 +433,25 @@ jq -s '.' recipe-*.json > recipeinfo.json
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest
 cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder";
 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
-popd ;    
+popd ; 
+
+
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/consul/mashling-consul-integration/mashling-gateway-consul.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-gateway-consul
+pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-gateway-consul
+dep init
+popd
+
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/envoy/mashling-envoy-front-proxy/http/http-mashling-envoy.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/http-mashling-envoy
+pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/http-mashling-envoy 
+dep init
+popd
+
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/istio/mashling-istio-tracing/mashling.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-istio-tracing
+pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-istio-tracing
+dep init
+popd
+
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/kubernetes/mashling-on-kubernetes/gateway.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-on-kubernetes
+pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-on-kubernetes
+dep init
+popd

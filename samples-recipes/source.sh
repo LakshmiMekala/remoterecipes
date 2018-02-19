@@ -4,4 +4,4 @@
 
     chmod ugo+x ./local-recipes.sh ./local-sanity.sh
     ./local-recipes.sh
-    ./local-sanity.sh
+    # ./local-sanity.sh

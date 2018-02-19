@@ -5,6 +5,7 @@ before_install:
   - "echo -e \"machine github.com\n  login ${GITHUB_USER_TOKEN}\" >> ~/.netrc"
   - go get github.com/constabulary/gb/...
   - go get -u github.com/ains/go-test-html
+  - go get -u github.com/golang/dep/cmd/dep
   - sudo apt-get install zookeeperd
   - go get -u github.com/tools/godep/...
   - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa --yes
