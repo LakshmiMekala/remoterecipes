@@ -288,7 +288,7 @@ function RecipesToBeCreated()
 		if [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/${recipeCreate[$y]}.json ]] || [[ -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest ]] ; then
 			echo "creating ${recipeCreate[$y]} gateway" ;
 			cp -r $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/${recipeCreate[$y]}/manifest $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"
-			mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}";
+			mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/"${remotereponame[$j]}"/"${recipeCreate[$y]}"/"${recipeCreate[$y]}".json "${recipeCreate[$y]}" > /tmp/test.log 2>&1 ;
 			rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/"${provider[$j]}"/manifest;
 		fi
 		binarycheck ;
@@ -326,12 +326,12 @@ function package_gateway()
             Len="${#GOOSystem[@]}";
             #for (( k=0; k < "${Len}"; k++ ));
             #do
-                export GOOS="${GOOSystem[$k]}" ;
-                echo GOOS=$GOOS ;
-                export GOARCH=amd64 ;
-                echo GOARCH=$GOARCH ;
-                echo "hitting mashling build";
-                mashling build ;        
+                # export GOOS="${GOOSystem[$k]}" ;
+                # echo GOOS=$GOOS ;
+                # export GOARCH=amd64 ;
+                # echo GOARCH=$GOARCH ;
+                # echo "hitting mashling build";
+                # mashling build ;        
                 mv bin "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
                 cp -r "${recipeCreate[$y]}.mashling.json" "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
                 echo $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/${remotereponame[$j]}/"${recipeCreate[$y]}"/"$displayImage"
@@ -372,7 +372,7 @@ function package_gateway()
             #done            
             #rm -r src vendor pkg mashling.json ;            
             cd ..;
-            export GOOS=linux ;
+            # export GOOS=linux ;
     else
         echo "failed to create ${recipeCreate[$y]} gateway"
         echo "directory ${recipeCreate[$y]}" not found
