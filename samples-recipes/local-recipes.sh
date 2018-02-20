@@ -370,7 +370,7 @@ function package_gateway()
                 cd .. ;
                  rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
             #done            
-            rm -r src vendor pkg mashling.json ;            
+            rm -r src vendor pkg mashling.json _vendor-*;            
             cd ..;
             # export GOOS=linux ;
     else
@@ -435,23 +435,29 @@ cp recipeinfo.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/m
 rm -rf $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/latest/temp ;
 popd ; 
 
+pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/consul/mashling-consul-integration/mashling-gateway-consul.json mashling-gateway-consul
+cd mashling-gateway-consul
+dep init
+rm -r src vendor pkg mashling.json _vendor-*;
+cd ..
 
-# mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/consul/mashling-consul-integration/mashling-gateway-consul.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-gateway-consul
-# pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-gateway-consul
-# dep init
-# popd
 
-# mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/envoy/mashling-envoy-front-proxy/http/http-mashling-envoy.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/http-mashling-envoy
-# pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/http-mashling-envoy 
-# dep init
-# popd
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/envoy/mashling-envoy-front-proxy/http/http-mashling-envoy.json http-mashling-envoy
+cd http-mashling-envoy 
+dep init
+rm -r src vendor pkg mashling.json _vendor-*;
+cd ..
 
-# mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/istio/mashling-istio-tracing/mashling.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-istio-tracing
-# pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-istio-tracing
-# dep init
-# popd
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/istio/mashling-istio-tracing/mashling.json mashling-istio-tracing
+cd mashling-istio-tracing
+dep init
+rm -r src vendor pkg mashling.json _vendor-*;
+cd ..
 
-# mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/kubernetes/mashling-on-kubernetes/gateway.json $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-on-kubernetes
-# pushd $GOPATH/src/github.com/TIBCOSoftware/recip1/samples-recipes/master-builds/"$destFolder"/TIBCOSoftware-Engineering/mashling-on-kubernetes
-# dep init
-# popd
+mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/kubernetes/mashling-on-kubernetes/gateway.json mashling-on-kubernetes
+cd mashling-on-kubernetes
+dep init
+rm -r src vendor pkg mashling.json _vendor-*;
+cd ..
+popd
