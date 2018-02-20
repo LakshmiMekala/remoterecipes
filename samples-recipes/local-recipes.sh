@@ -370,7 +370,7 @@ function package_gateway()
                 cd .. ;
                  rm -r "${recipeCreate[$y]}-${OS_NAME[$k]}" ;
             #done            
-            #rm -r src vendor pkg mashling.json ;            
+            rm -r src vendor pkg mashling.json ;            
             cd ..;
             # export GOOS=linux ;
     else
