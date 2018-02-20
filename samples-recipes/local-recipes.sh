@@ -443,11 +443,11 @@ rm -r src vendor pkg mashling.json _vendor-*;
 cd ..
 
 
-mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/envoy/mashling-envoy-front-proxy/http/http-mashling-envoy.json http-mashling-envoy
-cd http-mashling-envoy 
-dep init
-rm -r src vendor pkg mashling.json _vendor-*;
-cd ..
+# mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/envoy/mashling-envoy-front-proxy/http/http-mashling-envoy.json http-mashling-envoy
+# cd http-mashling-envoy 
+# dep init
+# rm -r src vendor pkg mashling.json _vendor-*;
+# cd ..
 
 mashling create -f $GOPATH/src/github.com/TIBCOSoftware/mashling-recipes/recipes/istio/mashling-istio-tracing/mashling.json mashling-istio-tracing
 cd mashling-istio-tracing
